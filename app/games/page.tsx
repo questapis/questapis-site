@@ -24,8 +24,8 @@ const games = [
 
 export default function GamesPage() {
   return (
-    <main className="min-h-screen bg-slate-950 px-6 py-20 text-white">
-      <section className="mx-auto max-w-6xl">
+    <main className="min-h-screen px-6 py-20 text-white">
+      <section className="mx-auto max-w-7xl">
         <p className="text-sm uppercase tracking-[0.3em] text-blue-400">
           Future Games
         </p>
@@ -44,7 +44,7 @@ export default function GamesPage() {
           {games.map((game) => (
             <div
               key={game.title}
-              className="rounded-2xl border border-slate-800 bg-slate-900 p-6"
+              className="quest-card rounded-2xl p-6"
             >
               <span className="rounded-full border border-blue-500/40 bg-blue-500/10 px-3 py-1 text-xs text-blue-300">
                 {game.status}

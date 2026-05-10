@@ -31,8 +31,8 @@ const projects = [
 
 export default function ProjectsPage() {
   return (
-    <main className="min-h-screen bg-slate-950 px-6 py-20 text-white">
-      <section className="mx-auto max-w-6xl">
+    <main className="min-h-screen px-6 py-20 text-white">
+      <section className="mx-auto max-w-7xl">
         <p className="text-sm uppercase tracking-[0.3em] text-blue-400">
           QuestAPIs Portfolio
         </p>
@@ -50,7 +50,7 @@ export default function ProjectsPage() {
           {projects.map((project) => (
             <div
               key={project.title}
-              className="rounded-2xl border border-slate-800 bg-slate-900 p-6"
+              className="quest-card rounded-2xl p-6"
             >
               <div className="flex items-center justify-between gap-4">
                 <h2 className="text-2xl font-bold text-blue-300">

@@ -9,8 +9,8 @@ const benefits = [
 
 export default function BetaPage() {
   return (
-    <main className="min-h-screen bg-slate-950 px-6 py-20 text-white">
-      <section className="mx-auto max-w-5xl">
+    <main className="min-h-screen px-6 py-20 text-white">
+  <section className="mx-auto max-w-7xl">
         <p className="text-sm uppercase tracking-[0.3em] text-blue-400">
           QuestAPIs Beta Access
         </p>
@@ -26,7 +26,7 @@ export default function BetaPage() {
         </p>
 
         <div className="mt-12 grid gap-8 md:grid-cols-2">
-          <div className="rounded-2xl border border-slate-800 bg-slate-900 p-6">
+          <div className="quest-card rounded-2xl p-6">
             <h2 className="text-2xl font-bold text-blue-300">
               Beta Benefits
             </h2>

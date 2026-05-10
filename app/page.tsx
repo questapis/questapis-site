@@ -1,103 +1,121 @@
+import Image from "next/image";
+
 const features = [
-  ["Quest Engine API", "Create quests, objectives, and completion logic."],
-  ["Player API", "Track users, levels, XP, and progress."],
-  ["Reward API", "Manage XP, coins, unlocks, and reward history."],
-  ["Inventory API", "Store items, collectibles, and game assets."],
-  ["Developer Docs", "Beginner-friendly guides and examples."],
-  ["Future Games", "Interactive projects powered by QuestAPIs."],
+  {
+    icon: "</>",
+    title: "Powerful APIs",
+    text: "Robust, scalable, and easy to integrate APIs for your applications.",
+    color: "bg-blue-600/25 text-blue-300",
+  },
+  {
+    icon: "▣",
+    title: "Developer Docs",
+    text: "Clear, comprehensive documentation and code examples.",
+    color: "bg-purple-600/25 text-purple-300",
+  },
+  {
+    icon: "↗",
+    title: "Developer Tools",
+    text: "Tools and SDKs to simplify integration and speed up development.",
+    color: "bg-emerald-600/25 text-emerald-300",
+  },
+  {
+    icon: "◇",
+    title: "Secure & Reliable",
+    text: "Built with access control, API keys, and growth-ready systems in mind.",
+    color: "bg-yellow-600/25 text-yellow-300",
+  },
 ];
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-slate-950 text-white">
-      <section className="relative overflow-hidden px-6 py-24 text-center">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(59,130,246,0.25),_transparent_40%)]" />
+    <main className="min-h-screen overflow-hidden bg-[#020711] text-white">
+      <section className="relative border-b border-slate-800/80">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_75%_40%,rgba(37,99,235,0.30),transparent_32%),radial-gradient(circle_at_30%_20%,rgba(15,23,42,0.9),transparent_40%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(2,7,17,0.2),#020711)]" />
 
-        <div className="relative mx-auto max-w-5xl">
-          <p className="mb-4 text-sm uppercase tracking-[0.35em] text-blue-400">
-            Welcome to QuestAPIs
-          </p>
+        <div className="relative mx-auto grid max-w-7xl items-center gap-10 px-6 py-20 md:grid-cols-2 md:py-24">
+          <div>
+            <h1 className="text-5xl font-black leading-tight tracking-tight md:text-7xl">
+              Power Your Ideas.
+              <br />
+              <span className="text-blue-500">Build</span> the Future.
+            </h1>
 
-          <h1 className="text-5xl font-bold leading-tight md:text-7xl">
-            Developer APIs for apps, games, and digital adventures.
-          </h1>
+            <p className="mt-8 max-w-2xl text-xl leading-9 text-slate-300">
+              QuestAPIs provides developer-friendly APIs, tools, and resources
+              to help you build, integrate, and scale digital experiences.
+            </p>
 
-          <p className="mx-auto mt-6 max-w-2xl text-lg text-slate-300">
-            QuestAPIs helps developers add quests, players, rewards,
-            inventories, and progression systems into apps, games, dashboards,
-            and future digital products.
-          </p>
+            <div className="mt-10 flex flex-wrap gap-5">
+              <a
+                href="/apis"
+                className="rounded-xl bg-blue-600 px-8 py-4 text-lg font-bold text-white shadow-[0_0_35px_rgba(37,99,235,0.45)] transition hover:bg-blue-500"
+              >
+                Explore APIs →
+              </a>
 
-          <div className="mt-10 flex flex-wrap justify-center gap-4">
-            <a
-              href="/apis"
-              className="rounded-xl bg-blue-500 px-6 py-3 font-semibold text-white transition hover:bg-blue-600"
-            >
-              Explore APIs
-            </a>
+              <a
+                href="/docs"
+                className="rounded-xl border border-slate-700 bg-black/30 px-8 py-4 text-lg font-bold text-white transition hover:border-blue-500 hover:bg-slate-900"
+              >
+                Read Docs
+              </a>
+            </div>
+          </div>
 
-            <a
-              href="/beta"
-              className="rounded-xl border border-slate-600 px-6 py-3 font-semibold transition hover:bg-slate-800"
-            >
-              Join Beta
-            </a>
+          <div className="relative hidden items-center justify-center md:flex">
+            <div className="absolute h-[520px] w-[520px] rounded-full border border-blue-500/10" />
+            <div className="absolute h-[430px] w-[430px] rounded-full border border-blue-500/10" />
+            <div className="absolute h-[340px] w-[340px] rounded-full bg-blue-600/20 blur-3xl" />
+
+            <Image
+              src="/questapis-logo.png"
+              alt="QuestAPIs Logo"
+              width={560}
+              height={560}
+              priority
+              className="relative drop-shadow-[0_0_40px_rgba(37,99,235,0.35)]"
+            />
           </div>
         </div>
       </section>
 
-      <section className="px-6 pb-24">
-        <div className="mx-auto max-w-6xl">
-          <div className="mb-10">
-            <p className="text-sm uppercase tracking-[0.3em] text-blue-400">
-              Platform
-            </p>
+      <section className="px-6 py-16">
+        <div className="mx-auto max-w-7xl text-center">
+          <p className="text-sm font-bold uppercase tracking-[0.35em] text-blue-500">
+            Built for Developers
+          </p>
 
-            <h2 className="mt-3 text-4xl font-bold">
-              Build progression systems faster.
-            </h2>
+          <h2 className="mt-4 text-4xl font-black">
+            Everything You Need to Build
+          </h2>
 
-            <p className="mt-4 max-w-2xl text-slate-300">
-              Start with simple APIs today, then grow into more advanced tools,
-              docs, demos, and future QuestAPIs products.
-            </p>
-          </div>
+          <p className="mt-4 text-lg text-slate-300">
+            APIs, tools, documentation, and support to accelerate your next
+            project.
+          </p>
 
-          <div className="grid gap-6 md:grid-cols-3">
-            {features.map(([title, text]) => (
+          <div className="mt-12 grid gap-6 md:grid-cols-4">
+            {features.map((feature) => (
               <div
-                key={title}
-                className="rounded-2xl border border-slate-800 bg-slate-900/80 p-6 shadow-lg transition hover:border-blue-500/50 hover:bg-slate-900"
+                key={feature.title}
+                className="rounded-2xl border border-slate-800 bg-slate-950/70 p-6 text-left shadow-2xl transition hover:border-blue-500/50 hover:bg-slate-900/80"
               >
-                <h3 className="text-xl font-bold text-blue-300">{title}</h3>
-                <p className="mt-3 text-slate-300">{text}</p>
+                <div
+                  className={`mb-6 flex h-16 w-16 items-center justify-center rounded-xl text-2xl font-black ${feature.color}`}
+                >
+                  {feature.icon}
+                </div>
+
+                <h3 className="text-2xl font-bold">{feature.title}</h3>
+
+                <p className="mt-4 leading-7 text-slate-300">
+                  {feature.text}
+                </p>
               </div>
             ))}
           </div>
-        </div>
-      </section>
-
-      <section className="px-6 pb-24">
-        <div className="mx-auto max-w-6xl rounded-3xl border border-blue-500/30 bg-blue-500/10 p-8 md:p-12">
-          <p className="text-sm uppercase tracking-[0.3em] text-blue-300">
-            Current Status
-          </p>
-
-          <h2 className="mt-4 text-4xl font-bold">
-            QuestAPIs is preparing for public beta.
-          </h2>
-
-          <p className="mt-4 max-w-3xl text-slate-300">
-            Early testers can explore the platform, test API systems, and help
-            shape the next version before public release.
-          </p>
-
-          <a
-            href="/beta"
-            className="mt-8 inline-block rounded-xl bg-blue-500 px-6 py-3 font-semibold text-white transition hover:bg-blue-600"
-          >
-            Request Beta Access
-          </a>
         </div>
       </section>
     </main>
