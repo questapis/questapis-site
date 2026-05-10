@@ -1,4 +1,5 @@
 import "./globals.css";
+import Image from "next/image";
 
 export const metadata = {
   title: "QuestAPIs | Developer APIs & Digital Adventures",
@@ -27,14 +28,20 @@ export default function RootLayout({
         <nav className="sticky top-0 z-50 border-b border-slate-800 bg-slate-950/90 px-6 py-4 backdrop-blur">
           <div className="mx-auto flex max-w-6xl items-center justify-between gap-6">
             <a href="/" className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-blue-500/40 bg-blue-500/10 text-lg font-black text-blue-300">
-                Q
-              </div>
+              <Image
+  src="/questapis-logo.png"
+  alt="QuestAPIs Logo"
+  width={50}
+  height={50}
+  className="rounded-lg"
+/>
 
               <div>
-                <p className="text-lg font-bold text-white">QuestAPIs</p>
-                <p className="text-xs text-slate-400">Developer API Platform</p>
-              </div>
+  <p className="text-lg font-bold text-white">QuestAPIs</p>
+  <p className="text-xs text-slate-400">
+    Code • Build • Conquer
+  </p>
+</div>
             </a>
 
             <div className="hidden gap-5 text-sm text-slate-300 md:flex">
