@@ -1,5 +1,7 @@
 import Image from "next/image";
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/next";
+
 
 export const metadata = {
   title: "QuestAPIs | Developer APIs & Digital Adventures",
@@ -80,6 +82,8 @@ export default function RootLayout({
             </div>
           </div>
         </footer>
+
+        <Analytics />
       </body>
     </html>
   );
