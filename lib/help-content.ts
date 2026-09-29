@@ -5,6 +5,7 @@ export const faqGroups = [
       { question: "Do I need coding experience?", answer: "No. Starter Grove begins with programs, the internet, clients, servers, and data before asking you to read or write code." },
       { question: "Is the Academy free?", answer: "The Explorer foundation is designed to include free beginner lessons and limited playground use. Final premium features and prices have not been announced." },
       { question: "Will I lose progress if I miss a day?", answer: "No. Streaks celebrate consistency without removing XP, gold, achievements, or completed lessons when you take a break." },
+      { question: "Can I install QuestAPIs like an app?", answer: "Yes. On iPhone or iPad, open QuestAPIs in Safari, tap Share, then Add to Home Screen. On Android, open it in Chrome and choose Install app or Add to Home screen. Supported desktop browsers also offer an install button in the address bar or browser menu." },
       { question: "Are XP and gold real money?", answer: "No. Gold is earned virtual currency used only for learning rewards and cosmetics. It cannot be withdrawn or exchanged for cash." },
     ],
   },
@@ -21,7 +22,7 @@ export const faqGroups = [
     title: "Accounts and billing",
     questions: [
       { question: "How is lesson progress saved?", answer: "After you sign in, the server validates a published lesson answer and asks the database to record the completion and one-time reward atomically. Refreshing or repeating the request cannot award the same lesson reward twice." },
-      { question: "Can I reset my password?", answer: "Yes once email delivery and Supabase redirect URLs are configured. The reset request and choose-new-password screens are already implemented." },
+      { question: "Can I reset my password?", answer: "Yes. Use Forgot password on the sign-in screen, then follow the secure link sent to your email to choose a new password." },
       { question: "Can I buy a premium plan now?", answer: "No. Final prices have not been set and QuestAPIs does not fake successful payments. Stripe will first be connected in test mode on staging." },
       { question: "Does buying a cosmetic affect API access?", answer: "No. Cosmetics use earned virtual gold. API and Academy premium access comes from separately verified plan entitlements or grants." },
       { question: "Can a cosmetic purchase use a price sent by my browser?", answer: "No. The database loads the published item price, locks your wallet during the transaction, checks ownership and balance, and commits the ledger, deduction, purchase, and inventory together." },

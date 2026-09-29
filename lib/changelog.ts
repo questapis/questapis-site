@@ -10,6 +10,18 @@ export type ChangelogEntry = {
 
 export const changelog: ChangelogEntry[] = [
   {
+    version: "0.3.1",
+    date: "2026-09-29",
+    title: "Public launch foundation",
+    summary: "The rebuilt QuestAPIs experience is live on the primary domain, the Academy is installable, and the Journal and closed-beta transition are prepared as separate deployments.",
+    groups: [
+      { kind: "Added", items: ["Installable Academy experience with web-app metadata, branded icons, standalone display, and a conservative offline learning shell", "QuestAPIs Journal with three launch articles, RSS, sitemap, robots policy, and security headers", "Home-screen installation guidance for iPhone, iPad, Android, and supported desktop browsers"] },
+      { kind: "Changed", items: ["Published the rebuilt v2 website to questapis.dev", "Replaced the beta application page with a clear applications-closed notice", "Improved signup routing so immediately confirmed accounts continue into onboarding"] },
+      { kind: "Security", items: ["Kept the legacy production branch untouched while publishing the rebuild from the isolated v2-staging branch", "The offline worker excludes authentication and API routes from its cache"] },
+      { kind: "Known limitation", items: ["Some offline lesson actions still require a network connection to validate answers and save rewards", "The Journal custom domain may show a certificate delay while DNS and TLS provisioning complete"] },
+    ],
+  },
+  {
     version: "0.3.0",
     date: "2026-09-28",
     title: "Phase 1.5 authority and transaction hardening",
