@@ -4,7 +4,7 @@
 create table public.player_equipment (
   user_id uuid not null references auth.users on delete cascade,
   slot public.inventory_slot not null,
-  item_id uuid not null references public.shop_items,
+  item_id uuid not null references public.academy_shop_items,
   equipped_at timestamptz not null default now(),
   primary key (user_id, slot)
 );
@@ -19,7 +19,7 @@ create table public.announcements (
   updated_at timestamptz not null default now()
 );
 
-alter table public.api_keys add column quota_limit integer not null default 1000 check (quota_limit > 0);
+alter table public.developer_api_keys add column quota_limit integer not null default 1000 check (quota_limit > 0);
 alter table public.profiles add column onboarding_path text check (onboarding_path in ('I have never coded before','I know a little coding','I want to learn APIs','I want to use APIs','I am building a project'));
 alter table public.profiles add column onboarded_at timestamptz;
 alter table public.api_usage add constraint api_usage_status_code_check check (status_code between 100 and 599);
@@ -38,7 +38,7 @@ alter table public.level_thresholds enable row level security;
 alter table public.reward_rules enable row level security;
 alter table public.achievement_definitions enable row level security;
 alter table public.title_definitions enable row level security;
-alter table public.shop_items enable row level security;
+alter table public.academy_shop_items enable row level security;
 alter table public.plans enable row level security;
 alter table public.entitlement_definitions enable row level security;
 alter table public.plan_entitlements enable row level security;
@@ -60,13 +60,13 @@ create policy "published quests are readable" on public.quest_definitions for se
 create policy "level thresholds are readable" on public.level_thresholds for select using (true);
 create policy "published achievements are readable" on public.achievement_definitions for select using (status = 'published');
 create policy "titles are readable" on public.title_definitions for select using (true);
-create policy "published shop items are readable" on public.shop_items for select using (status = 'published');
+create policy "published shop items are readable" on public.academy_shop_items for select using (status = 'published');
 create policy "active api products are readable" on public.api_products for select using (status = 'active');
 create policy "active api versions are readable" on public.api_versions for select using (active);
 create policy "published announcements are readable" on public.announcements for select using (status = 'published' and published_at <= now());
 create policy "equipment is self readable" on public.player_equipment for select using (auth.uid() = user_id);
 create policy "quota is self readable" on public.api_quota_windows for select using (
-  exists (select 1 from public.api_keys k where k.id = key_id and k.user_id = auth.uid())
+  exists (select 1 from public.developer_api_keys k where k.id = key_id and k.user_id = auth.uid())
 );
 
 create or replace function public.touch_updated_at()
@@ -154,12 +154,12 @@ create or replace function public.purchase_cosmetic(p_item_slug text)
 returns jsonb language plpgsql security definer set search_path = '' as $$
 declare
   v_user uuid := auth.uid();
-  v_item public.shop_items%rowtype;
+  v_item public.academy_shop_items%rowtype;
   v_profile public.profiles%rowtype;
   v_ledger uuid;
 begin
   if v_user is null then raise exception 'Authentication required'; end if;
-  select * into v_item from public.shop_items where slug = p_item_slug and status = 'published';
+  select * into v_item from public.academy_shop_items where slug = p_item_slug and status = 'published';
   if not found then raise exception 'Item is unavailable'; end if;
   select * into v_profile from public.profiles where id = v_user for update;
   if not found then raise exception 'Profile is unavailable'; end if;
@@ -179,10 +179,10 @@ $$;
 
 create or replace function public.equip_cosmetic(p_item_slug text)
 returns jsonb language plpgsql security definer set search_path = '' as $$
-declare v_user uuid := auth.uid(); v_item public.shop_items%rowtype;
+declare v_user uuid := auth.uid(); v_item public.academy_shop_items%rowtype;
 begin
   if v_user is null then raise exception 'Authentication required'; end if;
-  select s.* into v_item from public.shop_items s join public.player_inventory i on i.item_id = s.id
+  select s.* into v_item from public.academy_shop_items s join public.player_inventory i on i.item_id = s.id
     where s.slug = p_item_slug and i.user_id = v_user;
   if not found then raise exception 'Item is not owned'; end if;
   insert into public.player_equipment(user_id, slot, item_id) values (v_user, v_item.slot, v_item.id)
@@ -197,7 +197,7 @@ declare v_user uuid := auth.uid(); v_id uuid;
 begin
   if v_user is null then raise exception 'Authentication required'; end if;
   if char_length(trim(p_name)) not between 1 and 60 or p_hash !~ '^[a-f0-9]{64}$' then raise exception 'Invalid key data'; end if;
-  insert into public.api_keys(user_id, name, key_prefix, key_hash) values (v_user, trim(p_name), p_prefix, p_hash) returning id into v_id;
+  insert into public.developer_api_keys(user_id, name, key_prefix, key_hash) values (v_user, trim(p_name), p_prefix, p_hash) returning id into v_id;
   return jsonb_build_object('id', v_id, 'name', trim(p_name), 'prefix', p_prefix);
 end;
 $$;
@@ -218,7 +218,7 @@ returns boolean language plpgsql security definer set search_path = '' as $$
 declare v_user uuid := auth.uid(); v_count integer;
 begin
   if v_user is null then raise exception 'Authentication required'; end if;
-  update public.api_keys set revoked_at = coalesce(revoked_at, now()) where id = p_key_id and user_id = v_user;
+  update public.developer_api_keys set revoked_at = coalesce(revoked_at, now()) where id = p_key_id and user_id = v_user;
   get diagnostics v_count = row_count;
   return v_count = 1;
 end;
@@ -231,12 +231,12 @@ create or replace function public.meter_api_request(
   p_latency_ms integer default null
 ) returns jsonb language plpgsql security definer set search_path = '' as $$
 declare
-  v_key public.api_keys%rowtype;
+  v_key public.developer_api_keys%rowtype;
   v_product public.api_products%rowtype;
   v_window timestamptz := date_trunc('hour', now());
   v_used integer;
 begin
-  select * into v_key from public.api_keys where key_hash = p_key_hash and revoked_at is null for update;
+  select * into v_key from public.developer_api_keys where key_hash = p_key_hash and revoked_at is null for update;
   if not found then raise exception 'Invalid or revoked API key'; end if;
   select * into v_product from public.api_products where slug = p_product_slug and status = 'active';
   if not found then raise exception 'API product is unavailable'; end if;
@@ -246,7 +246,7 @@ begin
   returning used into v_used;
   if v_used > v_key.quota_limit then raise exception 'API quota exceeded'; end if;
   insert into public.api_usage(key_id, product_id, status_code, latency_ms) values (v_key.id, v_product.id, p_status_code, p_latency_ms);
-  update public.api_keys set last_used_at = now() where id = v_key.id;
+  update public.developer_api_keys set last_used_at = now() where id = v_key.id;
   return jsonb_build_object('keyId', v_key.id, 'used', v_used, 'limit', v_key.quota_limit);
 end;
 $$;
@@ -290,7 +290,7 @@ from public.lessons where slug='what-is-an-api' on conflict (lesson_id,version) 
 insert into public.quest_definitions(lesson_id,name,objective,reward_rule_key,status)
 select id,'First request','Identify the response in an API exchange.','starter-grove.intro','published'
 from public.lessons where slug='what-is-an-api' and not exists (select 1 from public.quest_definitions where lesson_id=lessons.id);
-insert into public.shop_items(slug,name,slot,rarity,gold_price,status) values
+insert into public.academy_shop_items(slug,name,slot,rarity,gold_price,status) values
   ('mosswood-frame','Mosswood Frame','frame','Common',100,'published'),
   ('firefly-companion','Firefly Companion','companion','Rare',140,'published'),
   ('cyan-trail','Cyan Trail','effect','Uncommon',260,'published'),

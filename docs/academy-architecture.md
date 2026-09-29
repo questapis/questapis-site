@@ -16,7 +16,7 @@ Status: proposed persistence design, not an applied migration. Reconcile with th
 | achievements, player_achievements | Configurable criteria, unique unlock per user/achievement, linked reward ledger event. Titles and badges are unlocks. |
 | streak_rules, player_learning_days | Unique (user_id, learning_date); server clock and documented timezone change policy; milestone reward has unique source. |
 | areas, area_requirements | Prerequisite achievements/lessons/level; server checks unlocks. |
-| shop_items, player_inventory, purchases | Frame, avatar, icon, nameplate, theme or pet; configurable gold price and entitlement; unique nonconsumable ownership. |
+| academy_shop_items, player_inventory, purchases | Frame, avatar, icon, nameplate, theme or pet; configurable gold price and entitlement; unique nonconsumable ownership. |
 | boost_definitions, player_boosts | Configurable duration, eligible activity, stacking policy and caps; server activation and expiry. |
 | entitlement_definitions, plan_entitlements, user_grants | Capability/limit by verified plan or explicit grant; expiry and provenance; default deny unknown capability. |
 | promotion_definitions, promotion_redemptions | Credits, elevated quota or discount; duration, eligibility, cap, start/end; unique redemption per user/promotion. Discounts require billing integration. |

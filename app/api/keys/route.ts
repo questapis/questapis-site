@@ -8,7 +8,7 @@ export async function GET() {
   const auth = await requireUser();
   if ("error" in auth) return auth.error;
   const { data, error } = await auth.supabase
-    .from("api_keys")
+    .from("developer_api_keys")
     .select("id,name,key_prefix,last_used_at,revoked_at,created_at")
     .order("created_at", { ascending: false });
   if (error) return apiError("KEY_LIST_FAILED", "Could not load API keys.", 500);
@@ -29,4 +29,3 @@ export async function POST(request: Request) {
   if (error) return apiError("KEY_CREATE_FAILED", "Could not create the API key.", 500);
   return Response.json({ data: { ...data, key: generated.rawKey } }, { status: 201 });
 }
-

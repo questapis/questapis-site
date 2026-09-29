@@ -9,7 +9,7 @@
 
 ## Content and products
 
-Review then apply `supabase/migrations/202609280001_v2_foundation.sql` to a new staging project. Add courses through regions, courses, lessons, and immutable lesson versions; keep answer keys out of client payloads. Add achievements through `achievement_definitions`, cosmetics through `shop_items`, and APIs through `api_products` plus `api_versions`. Reward-bearing changes require a versioned rule and server transaction with a unique idempotency key.
+Review then apply `supabase/migrations/202609280001_v2_foundation.sql` to a new staging project. Add courses through regions, courses, lessons, and immutable lesson versions; keep answer keys out of client payloads. Add achievements through `achievement_definitions`, cosmetics through `academy_shop_items`, and APIs through `api_products` plus `api_versions`. Reward-bearing changes require a versioned rule and server transaction with a unique idempotency key.
 
 For each user-visible release, update both `lib/changelog.ts` (the public page) and `CHANGELOG.md` (the repository record). Keep newest entries first and list incomplete work under known limitations rather than shipped features. Update `lib/help-content.ts` whenever an account, plan, API, or Academy behavior changes.
 

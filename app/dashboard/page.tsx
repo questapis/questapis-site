@@ -8,7 +8,7 @@ export default async function DashboardPage() {
   const supabase = await createClient();
   const { data } = supabase ? await supabase.auth.getUser() : { data: { user: null } };
   const { data: profile } = data.user && supabase ? await supabase.from("profiles").select("display_name,xp,gold,current_streak").single() : { data: null };
-  const { data: keys } = data.user && supabase ? await supabase.from("api_keys").select("id,name,key_prefix,created_at,last_used_at").is("revoked_at", null).order("created_at", { ascending: false }) : { data: [] };
+  const { data: keys } = data.user && supabase ? await supabase.from("developer_api_keys").select("id,name,key_prefix,created_at,last_used_at").is("revoked_at", null).order("created_at", { ascending: false }) : { data: [] };
   const { count: usageCount } = data.user && supabase ? await supabase.from("api_usage").select("id", { count: "exact", head: true }) : { count: 0 };
   const xp = profile?.xp ?? 0;
   return <main id="main-content" className="shell dashboard-page">

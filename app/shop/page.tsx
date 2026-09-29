@@ -8,14 +8,14 @@ export default async function ShopPage() {
   const owned: string[] = [];
   const equipped: string[] = [];
   if (supabase && auth.user) {
-    const { data: inventory } = await supabase.from("player_inventory").select("shop_items(slug)");
-    const { data: equipment } = await supabase.from("player_equipment").select("shop_items(slug)");
+    const { data: inventory } = await supabase.from("player_inventory").select("academy_shop_items(slug)");
+    const { data: equipment } = await supabase.from("player_equipment").select("academy_shop_items(slug)");
     for (const row of inventory ?? []) {
-      const item = row.shop_items as unknown as { slug?: string } | null;
+      const item = row.academy_shop_items as unknown as { slug?: string } | null;
       if (item?.slug) owned.push(item.slug);
     }
     for (const row of equipment ?? []) {
-      const item = row.shop_items as unknown as { slug?: string } | null;
+      const item = row.academy_shop_items as unknown as { slug?: string } | null;
       if (item?.slug) equipped.push(item.slug);
     }
   }
