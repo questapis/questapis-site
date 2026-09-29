@@ -21,7 +21,7 @@ export default function LearnPage() {
         <p className="muted">
           Discover the path ahead or jump straight into your first quest.
           <br />
-          The full academy and saved progression are still in development.
+          Starter Grove is open now, with saved progress for signed-in adventurers.
         </p>
         <a href="#first-quest" className="button">
           Start your first quest →

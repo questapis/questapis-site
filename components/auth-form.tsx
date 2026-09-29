@@ -17,14 +17,25 @@ export function AuthForm({ mode }: { mode: "login" | "signup" | "reset" }) {
     const password = String(form.get("password") ?? "");
     try {
       const supabase = createClient();
-      const result = mode === "login"
-        ? await supabase.auth.signInWithPassword({ email, password })
-        : mode === "signup"
-          ? await supabase.auth.signUp({ email, password, options: { emailRedirectTo: `${location.origin}/auth/callback` } })
-          : await supabase.auth.resetPasswordForEmail(email, { redirectTo: `${location.origin}/account/reset` });
-      if (result.error) throw result.error;
-      if (mode === "login") router.push("/dashboard");
-      else setMessage(mode === "signup" ? "Check your email to verify your account, then return to sign in." : "If an account exists, a reset link is on its way.");
+      if (mode === "login") {
+        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        if (error) throw error;
+        router.push("/dashboard");
+        router.refresh();
+      } else if (mode === "signup") {
+        const { data, error } = await supabase.auth.signUp({ email, password, options: { emailRedirectTo: `${location.origin}/auth/callback` } });
+        if (error) throw error;
+        if (data.session) {
+          router.push("/onboarding");
+          router.refresh();
+        } else {
+          setMessage("Check your email to verify your account, then return to sign in.");
+        }
+      } else {
+        const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo: `${location.origin}/account/reset` });
+        if (error) throw error;
+        setMessage("If an account exists, a reset link is on its way.");
+      }
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "Unable to continue. Try again.");
     } finally {

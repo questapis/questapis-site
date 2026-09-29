@@ -8,11 +8,13 @@ All notable QuestAPIs v2 changes are recorded here. Planned work is not listed a
 
 - A standalone QuestAPIs Journal with a responsive editorial homepage, three launch articles, RSS feed, sitemap, robots policy, and security headers.
 - A deterministic static build for the closed-beta landing page so it can deploy through the existing Vercel project and from GitHub.
+- Installable Progressive Web App support for the Academy, including home-screen metadata, branded icons, standalone display, and a conservative offline learning shell.
 
 ### Changed
 
 - Replaced the live beta application page with the redesigned closed-beta notice at the existing beta URL.
 - Connected the beta Vercel project to the private `questapis/QuestAPIs` repository while keeping the v2 rebuild isolated on `v2-staging`.
+- Published the rebuilt v2 website to `questapis.dev` and improved sign-up routing so immediately confirmed accounts continue directly into onboarding.
 
 ### Operations
 
