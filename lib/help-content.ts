@@ -3,7 +3,7 @@ export const faqGroups = [
     title: "Starting the Academy",
     questions: [
       { question: "Do I need coding experience?", answer: "No. Starter Grove begins with programs, the internet, clients, servers, and data before asking you to read or write code." },
-      { question: "How many quests are available?", answer: "Eight beginner quests are available across the full Academy map: APIs, HTTP, JSON, endpoints, authentication, webhooks, errors, and project planning. You can open any region, and signed-in learners can save each completion once." },
+      { question: "How many quests are available?", answer: "Twenty-four interactive quests are available across eight complete courses: APIs, HTTP, JSON, endpoints, authentication, webhooks, debugging, and project planning. You can open any course, and signed-in learners can save each completion once." },
       { question: "Is the Academy free?", answer: "The Explorer foundation is designed to include free beginner lessons and limited playground use. Final premium features and prices have not been announced." },
       { question: "Will I lose progress if I miss a day?", answer: "No. Streaks celebrate consistency without removing XP, gold, achievements, or completed lessons when you take a break." },
       { question: "Can I install QuestAPIs like an app?", answer: "Yes. On iPhone or iPad, open QuestAPIs in Safari, tap Share, then Add to Home Screen. On Android, open it in Chrome and choose Install app or Add to Home screen. Supported desktop browsers also offer an install button in the address bar or browser menu." },

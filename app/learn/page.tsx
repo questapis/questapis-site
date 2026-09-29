@@ -8,7 +8,7 @@ export default function LearnPage() {
   return (
     <main id="main-content" tabIndex={-1} className="shell learn-page">
       <section className="learn-intro">
-        <span className="status">Academy open</span>
+        <span className="status">All eight courses open</span>
         <p className="eyebrow">Welcome, explorer</p>
         <h1>
           Your first step into
@@ -19,7 +19,7 @@ export default function LearnPage() {
           Learn APIs from zero. No coding experience required.
         </p>
         <p className="muted">
-          Explore eight beginner quests or jump straight into your first one.
+          Explore twenty-four interactive quests or jump straight into your first one.
           <br />
           Signed-in adventurers can save each completion and earn one-time rewards.
         </p>

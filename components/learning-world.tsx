@@ -1,29 +1,66 @@
 "use client";
 
-import { useState } from "react";
-import { regions, type LearningQuest } from "@/lib/learning-regions";
+import { type FormEvent, useState, useSyncExternalStore } from "react";
+import { allAcademyQuests, courseQuests, regions, type LearningQuest } from "@/lib/learning-regions";
+
+const explorerNameKey = "questapis-explorer-name";
+function subscribeToExplorerName(callback: () => void) {
+  window.addEventListener("storage", callback);
+  window.addEventListener("questapis-name", callback);
+  return () => { window.removeEventListener("storage", callback); window.removeEventListener("questapis-name", callback); };
+}
+function readExplorerName() { return window.localStorage.getItem(explorerNameKey) ?? ""; }
+function readServerExplorerName() { return ""; }
 
 export function AcademyExperience() {
-  const [selected, setSelected] = useState(0);
+  const [selectedCourse, setSelectedCourse] = useState(0);
+  const [selectedQuest, setSelectedQuest] = useState(0);
   const [view, setView] = useState<"map" | "list">("map");
-  const quest = regions[selected];
+  const [nameDraft, setNameDraft] = useState("");
+  const explorerName = useSyncExternalStore(subscribeToExplorerName, readExplorerName, readServerExplorerName);
+  const region = regions[selectedCourse];
+  const quests = courseQuests[selectedCourse];
+  const quest = quests[selectedQuest];
 
-  function chooseQuest(index: number) {
-    setSelected(index);
+  function chooseQuest(courseIndex: number, questIndex: number) {
+    setSelectedCourse(courseIndex);
+    setSelectedQuest(questIndex);
     window.setTimeout(() => document.getElementById("active-quest")?.scrollIntoView({ behavior: "smooth" }), 0);
+  }
+
+  function saveExplorerName(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const name = nameDraft.trim().slice(0, 24);
+    if (!name) return;
+    window.localStorage.setItem(explorerNameKey, name);
+    window.dispatchEvent(new Event("questapis-name"));
   }
 
   return (
     <>
+      <section className="academy-welcome" aria-label="Explorer welcome">
+        <div className="welcome-orb" aria-hidden="true"><span>✦</span></div>
+        <div>
+          <p className="eyebrow">Your adventure remembers you</p>
+          <h2>{explorerName ? `Welcome back, ${explorerName}.` : "What should the Academy call you?"}</h2>
+          <p className="muted">Twenty-four quests are ready. Choose any course, learn at your pace, and return whenever you like.</p>
+        </div>
+        {explorerName ? <button className="text-link welcome-change" onClick={() => { setNameDraft(explorerName); window.localStorage.removeItem(explorerNameKey); window.dispatchEvent(new Event("questapis-name")); }}>Change name</button> :
+          <form className="explorer-name-form" onSubmit={saveExplorerName}>
+            <label htmlFor="explorer-name">Explorer name</label>
+            <div><input id="explorer-name" value={nameDraft} onChange={(event) => setNameDraft(event.target.value)} maxLength={24} placeholder="e.g. Nova" required /><button className="button">Save</button></div>
+            <small>Stored only on this device.</small>
+          </form>}
+      </section>
       <section aria-labelledby="world-title" className="section">
         <div className="section-heading">
-          <div><p className="eyebrow">The learning atlas</p><h2 id="world-title">Eight regions. Eight playable quests.</h2></div>
+          <div><p className="eyebrow">The learning atlas</p><h2 id="world-title">Eight courses. Twenty-four playable quests.</h2></div>
           <div className="view-switch" aria-label="World display">
             <button aria-pressed={view === "map"} onClick={() => setView("map")}>Map</button>
             <button aria-pressed={view === "list"} onClick={() => setView("list")}>Quest list</button>
           </div>
         </div>
-        <p className="muted world-note">Every region now has a beginner quest. Choose any region to learn, experiment, and save a one-time reward after signing in.</p>
+        <p className="muted world-note">Every region is now a complete three-quest course. Choose any route to learn, experiment, and save one-time rewards after signing in.</p>
         <div className="world-layout">
           <div className={`world-map ${view === "list" ? "list-view" : ""}`}>
             <svg viewBox="0 0 1000 650" preserveAspectRatio="none" aria-hidden="true" className="map-terrain">
@@ -36,30 +73,32 @@ export function AcademyExperience() {
             <ol className="region-nodes">
               {regions.map((item, index) => (
                 <li key={item.slug} style={{ left: `${item.x}%`, top: `${item.y}%` }}>
-                  <button className={`map-node ${selected === index ? "selected" : ""}`} aria-pressed={selected === index} aria-controls="region-detail" onClick={() => setSelected(index)}>
+                  <button className={`map-node ${selectedCourse === index ? "selected" : ""}`} aria-pressed={selectedCourse === index} aria-controls="region-detail" onClick={() => { setSelectedCourse(index); setSelectedQuest(0); }}>
                     <span className="node-marker" aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
-                    <span><strong>{item.name}</strong><small>Quest available</small></span>
+                    <span><strong>{item.name}</strong><small>3 quests available</small></span>
                   </button>
                 </li>
               ))}
             </ol>
           </div>
           <aside id="region-detail" className="quest-card region-detail" aria-live="polite">
-            <span className="card-index">REGION {String(selected + 1).padStart(2, "0")}</span>
-            <h3>{quest.name}</h3>
-            <p className="region-topic">{quest.topic}</p>
-            <p className="muted">{quest.description}</p>
-            <div className="quest-availability"><strong>{quest.title}</strong><p>{quest.duration} · 100 XP + a gold reward</p></div>
-            <button className="button" onClick={() => chooseQuest(selected)}>Open this quest →</button>
+            <span className="card-index">COURSE {String(selectedCourse + 1).padStart(2, "0")}</span>
+            <h3>{region.name}</h3>
+            <p className="region-topic">{region.topic}</p>
+            <p className="muted">{region.description}</p>
+            <div className="course-quest-list">
+              {quests.map((item, index) => <button key={item.slug} className={selectedQuest === index ? "selected" : ""} onClick={() => setSelectedQuest(index)}><span>{String(index + 1).padStart(2, "0")}</span><span><strong>{item.title}</strong><small>{item.duration} · 100 XP</small></span></button>)}
+            </div>
+            <button className="button" onClick={() => chooseQuest(selectedCourse, selectedQuest)}>Begin selected quest →</button>
           </aside>
         </div>
       </section>
-      <QuestLesson key={quest.slug} quest={quest} questNumber={selected + 1} />
+      <QuestLesson key={quest.slug} quest={quest} questNumber={selectedCourse * 3 + selectedQuest + 1} totalQuests={allAcademyQuests.length} />
     </>
   );
 }
 
-function QuestLesson({ quest, questNumber }: { quest: LearningQuest; questNumber: number }) {
+function QuestLesson({ quest, questNumber, totalQuests }: { quest: LearningQuest; questNumber: number; totalQuests: number }) {
   const [requested, setRequested] = useState(false);
   const [answer, setAnswer] = useState<number | null>(null);
   const [completion, setCompletion] = useState("");
@@ -92,9 +131,9 @@ function QuestLesson({ quest, questNumber }: { quest: LearningQuest; questNumber
   }
 
   return (
-    <section className="lesson section" id="active-quest" aria-labelledby="quest-title">
+    <section className={`lesson section ${answer === quest.correctAnswer ? "celebrating" : ""}`} id="active-quest" aria-labelledby="quest-title">
       <div className="lesson-heading">
-        <p className="eyebrow">{quest.name} / Quest {String(questNumber).padStart(2, "0")}</p>
+        <p className="eyebrow">{quest.name} / Quest {String(questNumber).padStart(2, "0")} of {totalQuests}</p>
         <h2 id="quest-title">{quest.title}</h2>
         <p className="muted">{quest.duration}. No setup or coding required.</p>
       </div>

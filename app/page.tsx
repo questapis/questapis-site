@@ -1,5 +1,5 @@
+import Image from "next/image";
 import Link from "next/link";
-import { Landscape } from "@/components/landscape";
 
 export default function Home() {
   return (
@@ -26,7 +26,7 @@ export default function Home() {
             begin your journey toward real projects.
           </p>
           <div className="actions">
-            <Link className="button" href="/learn#first-quest">
+            <Link className="button" href="/learn#active-quest">
               Start your first quest <span aria-hidden="true">↗</span>
             </Link>
             <Link className="button secondary" href="/apis">
@@ -34,22 +34,22 @@ export default function Home() {
             </Link>
           </div>
           <p className="small muted">
-            A free introductory preview. No account needed.
+            Twenty-four interactive quests. Start without an account.
           </p>
         </div>
         <div className="hero-world">
-          <Landscape />
+          <Image className="academy-world-image" src="/images/academy-world-v2.webp" alt="A cinematic learning world with connected forests, valleys, mountains, and a distant citadel" fill priority sizes="(max-width: 900px) 100vw, 50vw" />
           <div className="world-caption">
             <span className="eyebrow">Your journey begins here</span>
             <h2>Starter Grove</h2>
             <p>A small clearing. A world of possibilities.</p>
           </div>
-          <Link href="/learn#first-quest" className="floating-quest">
+          <Link href="/learn#active-quest" className="floating-quest">
             <span className="quest-emblem" aria-hidden="true">
               ✦
             </span>
             <span>
-              <span className="eyebrow">Your first quest · Preview</span>
+              <span className="eyebrow">Your first quest · Course 1 of 8</span>
               <strong>What is an API?</strong>
               <span className="muted small">
                 A simple idea that connects our world.
@@ -150,7 +150,7 @@ export default function Home() {
           <br />
           Just where to begin.
         </h2>
-        <Link href="/learn#first-quest" className="button">
+        <Link href="/learn#active-quest" className="button">
           Enter Starter Grove →
         </Link>
       </section>

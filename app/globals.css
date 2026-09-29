@@ -295,6 +295,17 @@ button:disabled {
   inset: 0;
   object-fit: cover;
 }
+.academy-world-image {
+  object-fit: cover;
+  object-position: 58% center;
+  z-index: -2;
+  transform: scale(1.02);
+  transition: transform 1.2s ease, filter 1.2s ease;
+}
+.hero-world:hover .academy-world-image {
+  transform: scale(1.065);
+  filter: saturate(1.08) brightness(1.05);
+}
 .hero-world:after {
   content: "";
   position: absolute;
@@ -503,8 +514,21 @@ button:disabled {
   color: var(--accent);
 }
 .learn-intro {
-  padding-block: 64px 24px;
+  display: flex;
+  min-height: 500px;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 32px;
+  padding: 54px;
+  border: 1px solid #385760;
+  border-radius: 24px;
+  background:
+    linear-gradient(90deg, #08131cfb 0%, #08131ce8 43%, #08131c2b 76%),
+    url("/images/academy-world-v2.webp") 64% center / cover;
+  box-shadow: 0 30px 90px #0007, inset 0 1px #ffffff12;
+  overflow: hidden;
 }
+.learn-intro > * { max-width: 590px; }
 .learn-intro .eyebrow {
   margin-top: 30px;
 }
@@ -539,6 +563,64 @@ button:disabled {
 .world-note {
   font-size: 14px;
 }
+.academy-welcome {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 24px;
+  margin-top: 34px;
+  padding: 26px 30px;
+  border: 1px solid #4a6e72;
+  border-radius: var(--radius);
+  background:
+    linear-gradient(105deg, #0b1c26f2, #123a3ee8),
+    url("/images/academy-world-v2.webp") center 58% / cover;
+  box-shadow: 0 24px 80px #0007, inset 0 1px #b3f4ff20;
+  overflow: hidden;
+}
+.academy-welcome::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, #79dfeb0b, transparent);
+  animation: welcome-shimmer 8s linear infinite;
+}
+.academy-welcome h2 {
+  font-family: Georgia, serif;
+  font-size: clamp(25px, 3vw, 36px);
+  margin: 4px 0 8px;
+}
+.academy-welcome p { margin-bottom: 0; }
+.welcome-orb {
+  display: grid;
+  place-items: center;
+  width: 70px;
+  height: 70px;
+  border: 1px solid #f2ce7899;
+  border-radius: 50%;
+  background: radial-gradient(circle, #f2ce7845, #79dfeb10 55%, transparent 70%);
+  box-shadow: 0 0 35px #79dfeb30;
+  color: var(--gold);
+  font-size: 27px;
+  animation: welcome-float 4s ease-in-out infinite;
+}
+.explorer-name-form { min-width: 270px; }
+.explorer-name-form label,
+.explorer-name-form small { display: block; color: var(--muted); font-size: 11px; }
+.explorer-name-form > div { display: flex; gap: 8px; margin: 6px 0 3px; }
+.explorer-name-form input {
+  min-width: 0;
+  width: 170px;
+  border: 1px solid var(--control);
+  border-radius: 8px;
+  background: #07151ee8;
+  color: var(--foreground);
+  padding: 10px 12px;
+}
+.explorer-name-form .button { min-height: 42px; padding: 8px 14px; }
+.welcome-change { border: 0; background: transparent; white-space: nowrap; }
 .world-layout {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 290px;
@@ -649,6 +731,38 @@ button:disabled {
   font-size: 13px;
   margin-top: 6px;
 }
+.course-quest-list {
+  display: grid;
+  gap: 8px;
+  margin: 22px 0;
+}
+.course-quest-list button {
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr);
+  gap: 10px;
+  align-items: center;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #091922;
+  color: var(--foreground);
+  text-align: left;
+}
+.course-quest-list button:hover,
+.course-quest-list button.selected { border-color: var(--accent); background: var(--raised); }
+.course-quest-list button > span:first-child { color: var(--gold); font-size: 11px; }
+.course-quest-list strong,
+.course-quest-list small { display: block; }
+.course-quest-list strong { font-size: 12px; line-height: 1.3; }
+.course-quest-list small { color: var(--muted); font-size: 10px; margin-top: 3px; }
+.lesson.celebrating .knowledge-check {
+  animation: quest-complete 650ms ease-out;
+  box-shadow: 0 0 0 1px #98deb188, 0 0 55px #79dfeb26;
+}
+@keyframes welcome-shimmer { to { transform: translateX(100%); } }
+@keyframes welcome-float { 50% { transform: translateY(-6px) rotate(5deg); } }
+@keyframes quest-complete { 50% { transform: translateY(-4px) scale(1.008); } }
 .list-view .map-terrain {
   display: none;
 }
@@ -963,8 +1077,22 @@ button:disabled {
     gap: 4px 22px;
   }
   .learn-intro {
-    padding-block: 40px 16px;
+    min-height: 540px;
+    margin-top: 20px;
+    padding: 32px 24px;
+    background:
+      linear-gradient(0deg, #08131cfa 0%, #08131cdb 58%, #08131c35 100%),
+      url("/images/academy-world-v2.webp") 69% center / cover;
   }
+  .academy-welcome {
+    grid-template-columns: auto minmax(0, 1fr);
+    padding: 22px;
+  }
+  .welcome-orb { width: 52px; height: 52px; }
+  .explorer-name-form,
+  .welcome-change { grid-column: 1 / -1; width: 100%; }
+  .explorer-name-form > div { align-items: stretch; }
+  .explorer-name-form input { flex: 1; width: auto; }
   .world-map {
     min-height: 0;
   }

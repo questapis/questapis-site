@@ -10,6 +10,18 @@ export type ChangelogEntry = {
 
 export const changelog: ChangelogEntry[] = [
   {
+    version: "0.5.0",
+    date: "2026-09-29",
+    title: "The complete interactive Academy",
+    summary: "Every Academy region is now a three-quest course, wrapped in a more personal, cinematic learning experience.",
+    groups: [
+      { kind: "Added", items: ["Sixteen new interactive lessons for a total of 24 published quests", "A personal explorer-name welcome stored privately on the learner's device", "Course-level quest selection with clear duration and reward details", "Original cinematic 3D Academy world artwork with responsive, accessible presentation", "Celebratory motion and feedback after correct answers"] },
+      { kind: "Changed", items: ["Dashboard progress now tracks all 24 Academy quests", "Each of the eight map regions now opens a complete three-lesson course", "Homepage and Academy messaging now reflect the full published program"] },
+      { kind: "Security", items: ["New lessons continue to use server-authoritative answer validation and one-time reward transactions", "Personal explorer names stay in local browser storage and are not transmitted"] },
+      { kind: "Known limitation", items: ["The current program is a compact foundations course, not yet a professional certification", "Saved rewards require a verified QuestAPIs account and network connection"] },
+    ],
+  },
+  {
     version: "0.4.0",
     date: "2026-09-29",
     title: "Eight-quest Academy and reliable account return",
