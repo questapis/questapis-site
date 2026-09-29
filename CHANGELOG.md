@@ -9,17 +9,20 @@ All notable QuestAPIs v2 changes are recorded here. Planned work is not listed a
 - A standalone QuestAPIs Journal with a responsive editorial homepage, three launch articles, RSS feed, sitemap, robots policy, and security headers.
 - A deterministic static build for the closed-beta landing page so it can deploy through the existing Vercel project and from GitHub.
 - Installable Progressive Web App support for the Academy, including home-screen metadata, branded icons, standalone display, and a conservative offline learning shell.
+- Production account profiles, onboarding, lesson completion, XP/gold rewards, cosmetic inventory, and developer-key storage backed by Supabase with row-level security.
 
 ### Changed
 
 - Replaced the live beta application page with the redesigned closed-beta notice at the existing beta URL.
 - Connected the beta Vercel project to the private `questapis/QuestAPIs` repository while keeping the v2 rebuild isolated on `v2-staging`.
 - Published the rebuilt v2 website to `questapis.dev` and improved sign-up routing so immediately confirmed accounts continue directly into onboarding.
+- Preserved the incompatible legacy `api_keys` and `shop_items` tables and isolated the v2 models under distinct names.
 
 ### Operations
 
 - Verified `questapis.dev` and `www.questapis.dev` already resolve successfully through the existing production Vercel project; no production DNS or domain assignment was changed.
-- Confirmed `questapis.blog` is owned in Porkbun and prepared a separate deployment path so the blog does not depend on the unfinished application backend.
+- Connected `questapis.blog` to its separate Vercel deployment and verified HTTPS delivery.
+- Restored the QuestAPIs Supabase project, set the production authentication site URL, and allow-listed account callback and password-reset routes.
 
 ## [0.3.0] — 2026-09-28
 

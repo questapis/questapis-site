@@ -13,12 +13,12 @@ export const changelog: ChangelogEntry[] = [
     version: "0.3.1",
     date: "2026-09-29",
     title: "Public launch foundation",
-    summary: "The rebuilt QuestAPIs experience is live on the primary domain, the Academy is installable, and the Journal and closed-beta transition are prepared as separate deployments.",
+    summary: "The rebuilt QuestAPIs experience is live on the primary domain with production accounts and saved Academy progress, while the Journal and closed-beta notice run as separate deployments.",
     groups: [
-      { kind: "Added", items: ["Installable Academy experience with web-app metadata, branded icons, standalone display, and a conservative offline learning shell", "QuestAPIs Journal with three launch articles, RSS, sitemap, robots policy, and security headers", "Home-screen installation guidance for iPhone, iPad, Android, and supported desktop browsers"] },
-      { kind: "Changed", items: ["Published the rebuilt v2 website to questapis.dev", "Replaced the beta application page with a clear applications-closed notice", "Improved signup routing so immediately confirmed accounts continue into onboarding"] },
-      { kind: "Security", items: ["Kept the legacy production branch untouched while publishing the rebuild from the isolated v2-staging branch", "The offline worker excludes authentication and API routes from its cache"] },
-      { kind: "Known limitation", items: ["Some offline lesson actions still require a network connection to validate answers and save rewards", "The Journal custom domain may show a certificate delay while DNS and TLS provisioning complete"] },
+      { kind: "Added", items: ["Installable Academy experience with web-app metadata, branded icons, standalone display, and a conservative offline learning shell", "Production profiles, onboarding, saved lesson completion, XP/gold rewards, cosmetics, and developer-key storage", "QuestAPIs Journal with three launch articles, RSS, sitemap, robots policy, and security headers", "Home-screen installation guidance for iPhone, iPad, Android, and supported desktop browsers"] },
+      { kind: "Changed", items: ["Published the rebuilt v2 website to questapis.dev", "Connected questapis.blog and verified HTTPS delivery", "Replaced the beta application page with a clear applications-closed notice", "Improved signup routing so immediately confirmed accounts continue into onboarding"] },
+      { kind: "Security", items: ["Activated 27 row-security policies and server-authoritative Academy transactions", "Preserved incompatible legacy API-key and shop tables by giving the v2 models distinct names", "Kept the legacy production branch untouched while publishing the rebuild from the isolated v2-staging branch", "The offline worker excludes authentication and API routes from its cache"] },
+      { kind: "Known limitation", items: ["Some offline lesson actions still require a network connection to validate answers and save rewards", "Email confirmation is required before a new account can sign in", "Paid plans remain unavailable until verified Stripe test-mode work is complete"] },
     ],
   },
   {
