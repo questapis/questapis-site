@@ -24,7 +24,7 @@ const games = [
 
 export default function GamesPage() {
   return (
-    <main className="min-h-screen px-6 py-20 text-white">
+    <main id="main-content" tabIndex={-1} className="min-h-screen px-6 py-20 text-white">
       <section className="mx-auto max-w-7xl">
         <p className="text-sm uppercase tracking-[0.3em] text-blue-400">
           Future Games

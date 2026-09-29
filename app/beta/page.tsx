@@ -1,71 +1,28 @@
-const benefits = [
-  "Early access to QuestAPIs APIs",
-  "Free beta testing API keys",
-  "Beginner-friendly setup guidance",
-  "Example projects and implementation ideas",
-  "Priority feedback during testing",
-  "Access before public release",
-];
+import Link from "next/link";
+
+export const metadata = {
+  title: "Beta applications closed | QuestAPIs",
+  description: "The QuestAPIs private beta application window is closed while the v2 platform foundation is validated.",
+  robots: { index: false, follow: true },
+};
 
 export default function BetaPage() {
   return (
-    <main className="min-h-screen px-6 py-20 text-white">
-  <section className="mx-auto max-w-7xl">
-        <p className="text-sm uppercase tracking-[0.3em] text-blue-400">
-          QuestAPIs Beta Access
-        </p>
-
-        <h1 className="mt-4 text-5xl font-bold">
-          Join the QuestAPIs Beta Program
-        </h1>
-
-        <p className="mt-6 max-w-3xl text-lg text-slate-300">
-          Get early access to QuestAPIs and help shape the future of our
-          RPG-inspired developer ecosystem. Beta testers can explore APIs,
-          provide feedback, and gain access before public launch.
-        </p>
-
-        <div className="mt-12 grid gap-8 md:grid-cols-2">
-          <div className="quest-card rounded-2xl p-6">
-            <h2 className="text-2xl font-bold text-blue-300">
-              Beta Benefits
-            </h2>
-
-            <ul className="mt-6 space-y-4">
-              {benefits.map((benefit) => (
-                <li key={benefit} className="flex gap-3 text-slate-300">
-                  <span className="text-blue-400">✓</span>
-                  {benefit}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="rounded-2xl border border-blue-500/30 bg-blue-500/10 p-6">
-            <h2 className="text-2xl font-bold text-blue-200">
-              Request Beta Access
-            </h2>
-
-            <p className="mt-4 text-slate-300">
-              Spots are limited for the current QuestAPIs beta. Join now to
-              request access and become one of our early testers.
-            </p>
-
-            <a
-              href="https://landing-page-three-pi-87.vercel.app/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-6 inline-block rounded-xl bg-blue-500 px-6 py-3 font-semibold text-white hover:bg-blue-600 transition"
-            >
-              Join Beta Now
-            </a>
-
-            <p className="mt-4 text-sm text-slate-400">
-              Limited early access • Active beta testing in progress
-            </p>
-          </div>
-        </div>
-      </section>
+    <main id="main-content" tabIndex={-1} className="shell standard-page state-page">
+      <p className="eyebrow">Beta window closed</p>
+      <h1>The first expedition has reached camp.</h1>
+      <p className="page-lede">
+        Applications are closed while we validate authentication, persistent learning,
+        earned rewards, developer keys, and the Grove API in an isolated staging environment.
+      </p>
+      <div className="notice">
+        <strong>Already applied?</strong>
+        <p>Your application does not need to be resubmitted. Future access details will appear here only after the platform foundation passes its readiness checks.</p>
+      </div>
+      <div className="actions">
+        <Link className="button" href="/learn">Explore Starter Grove →</Link>
+        <Link className="text-link" href="/changelog">Read the changelog →</Link>
+      </div>
     </main>
   );
 }

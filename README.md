@@ -1,36 +1,28 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# QuestAPIs v2
 
-## Getting Started
+The isolated Phase 1 foundation for a beginner-first API Academy and professional API platform. This checkout does not modify the current production deployment at `questapis.dev`.
 
-First, run the development server:
+## Local setup
 
-```bash
+```powershell
+npm ci
+Copy-Item .env.example .env.local
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open `http://localhost:3000`. Core routes include `/learn`, `/playground`, `/dashboard`, `/apis`, `/docs`, `/pricing`, `/shop`, `/help`, `/changelog`, `/status`, `/login`, and `/signup`. The Grove demo API is available at `/api/v1/demo/grove`; it allows keyless access only outside production when no key hash is configured.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Documentation
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `docs/architecture.md` — system boundaries and decisions.
+- `docs/academy-architecture.md` — authoritative progression contracts.
+- `docs/operations.md` — content management, deployment, and launch.
+- `docs/phase-1-5-validation.md` — staging evidence and adversarial test checklist.
+- `supabase/migrations/` — additive PostgreSQL/RLS foundation.
+- `legacy/beta-landing/` — standalone closed-beta landing page for the existing beta-only Vercel project.
+- `.env.example` — variable names and inert placeholders only.
+- `CHANGELOG.md` — shipped changes, security notes, and known limitations.
 
-## Learn More
+## Validation
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Run `npm run check` for lint, unit tests, TypeScript, and production build. Never commit credentials or point local development at the production database.

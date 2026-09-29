@@ -1,122 +1,158 @@
-import Image from "next/image";
-
-const features = [
-  {
-    icon: "</>",
-    title: "Powerful APIs",
-    text: "Robust, scalable, and easy to integrate APIs for your applications.",
-    color: "bg-blue-600/25 text-blue-300",
-  },
-  {
-    icon: "▣",
-    title: "Developer Docs",
-    text: "Clear, comprehensive documentation and code examples.",
-    color: "bg-purple-600/25 text-purple-300",
-  },
-  {
-    icon: "↗",
-    title: "Developer Tools",
-    text: "Tools and SDKs to simplify integration and speed up development.",
-    color: "bg-emerald-600/25 text-emerald-300",
-  },
-  {
-    icon: "◇",
-    title: "Secure & Reliable",
-    text: "Built with access control, API keys, and growth-ready systems in mind.",
-    color: "bg-yellow-600/25 text-yellow-300",
-  },
-];
+import Link from "next/link";
+import { Landscape } from "@/components/landscape";
 
 export default function Home() {
   return (
-    <main className="min-h-screen overflow-hidden bg-[#020711] text-white">
-      <section className="relative border-b border-slate-800/80">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_75%_40%,rgba(37,99,235,0.30),transparent_32%),radial-gradient(circle_at_30%_20%,rgba(15,23,42,0.9),transparent_40%)]" />
-        <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(2,7,17,0.2),#020711)]" />
-
-        <div className="relative mx-auto grid max-w-7xl items-center gap-10 px-6 py-20 md:grid-cols-2 md:py-24">
-          <div>
-            <h1 className="text-5xl font-black leading-tight tracking-tight md:text-7xl">
-              Power Your Ideas.
-              <br />
-              <span className="text-blue-500">Build</span> the Future.
-            </h1>
-
-            <p className="mt-8 max-w-2xl text-xl leading-9 text-slate-300">
-              QuestAPIs provides developer-friendly APIs, tools, and resources
-              to help you build, integrate, and scale digital experiences.
-            </p>
-
-            <div className="mt-10 flex flex-wrap gap-5">
-              <a
-                href="/apis"
-                className="rounded-xl bg-blue-600 px-8 py-4 text-lg font-bold text-white shadow-[0_0_35px_rgba(37,99,235,0.45)] transition hover:bg-blue-500"
-              >
-                Explore APIs →
-              </a>
-
-              <a
-                href="/docs"
-                className="rounded-xl border border-slate-700 bg-black/30 px-8 py-4 text-lg font-bold text-white transition hover:border-blue-500 hover:bg-slate-900"
-              >
-                Read Docs
-              </a>
-            </div>
+    <main id="main-content" tabIndex={-1}>
+      <section className="hero shell">
+        <div className="hero-copy">
+          <p className="eyebrow">
+            <span className="signal" /> Developer APIs · A world of learning
+          </p>
+          <h1>
+            Every builder
+            <br />
+            starts with
+            <br />
+            <em>a first quest.</em>
+          </h1>
+          <p className="hero-promise">
+            Learn APIs from zero.
+            <br />
+            <strong>No coding experience required.</strong>
+          </p>
+          <p className="muted">
+            Discover how apps talk to each other, try your first request, and
+            begin your journey toward real projects.
+          </p>
+          <div className="actions">
+            <Link className="button" href="/learn#first-quest">
+              Start your first quest <span aria-hidden="true">↗</span>
+            </Link>
+            <Link className="button secondary" href="/apis">
+              Explore QuestAPIs
+            </Link>
           </div>
-
-          <div className="relative hidden items-center justify-center md:flex">
-            <div className="absolute h-[520px] w-[520px] rounded-full border border-blue-500/10" />
-            <div className="absolute h-[430px] w-[430px] rounded-full border border-blue-500/10" />
-            <div className="absolute h-[340px] w-[340px] rounded-full bg-blue-600/20 blur-3xl" />
-
-            <Image
-              src="/questapis-logo.png"
-              alt="QuestAPIs Logo"
-              width={560}
-              height={560}
-              priority
-              className="relative drop-shadow-[0_0_40px_rgba(37,99,235,0.35)]"
-            />
+          <p className="small muted">
+            A free introductory preview. No account needed.
+          </p>
+        </div>
+        <div className="hero-world">
+          <Landscape />
+          <div className="world-caption">
+            <span className="eyebrow">Your journey begins here</span>
+            <h2>Starter Grove</h2>
+            <p>A small clearing. A world of possibilities.</p>
           </div>
+          <Link href="/learn#first-quest" className="floating-quest">
+            <span className="quest-emblem" aria-hidden="true">
+              ✦
+            </span>
+            <span>
+              <span className="eyebrow">Your first quest · Preview</span>
+              <strong>What is an API?</strong>
+              <span className="muted small">
+                A simple idea that connects our world.
+              </span>
+            </span>
+            <span aria-hidden="true">→</span>
+          </Link>
         </div>
       </section>
-
-      <section className="px-6 py-16">
-        <div className="mx-auto max-w-7xl text-center">
-          <p className="text-sm font-bold uppercase tracking-[0.35em] text-blue-500">
-            Built for Developers
-          </p>
-
-          <h2 className="mt-4 text-4xl font-black">
-            Everything You Need to Build
-          </h2>
-
-          <p className="mt-4 text-lg text-slate-300">
-            APIs, tools, documentation, and support to accelerate your next
-            project.
-          </p>
-
-          <div className="mt-12 grid gap-6 md:grid-cols-4">
-            {features.map((feature) => (
-              <div
-                key={feature.title}
-                className="rounded-2xl border border-slate-800 bg-slate-950/70 p-6 text-left shadow-2xl transition hover:border-blue-500/50 hover:bg-slate-900/80"
-              >
-                <div
-                  className={`mb-6 flex h-16 w-16 items-center justify-center rounded-xl text-2xl font-black ${feature.color}`}
-                >
-                  {feature.icon}
-                </div>
-
-                <h3 className="text-2xl font-bold">{feature.title}</h3>
-
-                <p className="mt-4 leading-7 text-slate-300">
-                  {feature.text}
-                </p>
-              </div>
-            ))}
-          </div>
+      <div className="path-strip">
+        <div className="shell">
+          <span>Learn at your own pace</span>
+          <span>Start with the basics</span>
+          <span>Build toward something real</span>
         </div>
+      </div>
+      <section className="shell section">
+        <div className="section-heading">
+          <div>
+            <p className="eyebrow">Choose your path</p>
+            <h2>Curiosity is all you need.</h2>
+          </div>
+          <p className="muted">
+            A welcoming place to learn.
+            <br />A practical platform to build with.
+          </p>
+        </div>
+        <div className="path-grid">
+          <article className="quest-card path-card">
+            <span className="card-index">01 / THE EXPLORER</span>
+            <h3>
+              New to APIs?
+              <br />
+              You belong here.
+            </h3>
+            <p className="muted">
+              Start with everyday examples, not a wall of code. Explore the
+              learning world and try a guided introduction.
+            </p>
+            <Link className="text-link" href="/learn">
+              Discover the academy →
+            </Link>
+          </article>
+          <article className="quest-card path-card">
+            <span className="card-index">02 / THE BUILDER</span>
+            <h3>
+              Your next project.
+              <br />
+              Our API toolkit.
+            </h3>
+            <p className="muted">
+              Explore modular APIs for quests, player profiles, rewards, and
+              inventory. Built for apps, games, and digital experiences.
+            </p>
+            <Link className="text-link" href="/apis">
+              Browse the API library →
+            </Link>
+          </article>
+        </div>
+      </section>
+      <section className="shell section product-section">
+        <div className="section-heading">
+          <div>
+            <p className="eyebrow">The platform behind the adventure</p>
+            <h2>One live sandbox. Room to build.</h2>
+          </div>
+          <Link className="text-link" href="/docs">
+            Read the docs overview →
+          </Link>
+        </div>
+        <div className="product-grid">
+          {[
+            ["Grove", "A safe, read-only API for your first real request."],
+            ["Quest Engine", "Quests, objectives, and completion tracking."],
+            ["Player", "Profiles, levels, and player progression."],
+            ["Reward", "XP, coins, unlocks, and reward history."],
+          ].map(([name, description], i) => (
+            <article className="product-card" key={name}>
+              <span className="product-symbol" aria-hidden="true">
+                {["✦", "⌘", "♧", "◇"][i]}
+              </span>
+              <span className="status">
+                {i === 0 ? "Dev sandbox" : "V2 planned"}
+              </span>
+              <h3>{name} API</h3>
+              <p className="muted">{description}</p>
+              <Link href={i === 0 ? "/playground" : "/apis"} aria-label={`Explore ${name} API`}>
+                Explore ↗
+              </Link>
+            </article>
+          ))}
+        </div>
+      </section>
+      <section className="shell closing">
+        <p className="eyebrow">One small step. A new world.</p>
+        <h2>
+          You don’t need to know the way.
+          <br />
+          Just where to begin.
+        </h2>
+        <Link href="/learn#first-quest" className="button">
+          Enter Starter Grove →
+        </Link>
       </section>
     </main>
   );

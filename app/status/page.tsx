@@ -1,0 +1,3 @@
+export const metadata = { title: "Service status | QuestAPIs" };
+export default function StatusPage() { return <main id="main-content" className="shell standard-page"><p className="eyebrow">System status</p><h1>QuestAPIs service health</h1><div className="notice"><strong>Production monitoring is not connected yet.</strong><p>We do not publish fabricated uptime. Live components, incident history, and external probes will appear here before v2 launches.</p></div><div className="status-list"><div><span>Website</span><b>Development</b></div><div><span>Academy</span><b>Staging foundation</b></div><div><span>Grove API</span><b>Development sandbox</b></div><div><span>Production APIs</span><b>Not launched</b></div></div></main>; }
+

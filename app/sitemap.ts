@@ -1,6 +1,10 @@
 export default function sitemap() {
   return [
     {
+      url: "https://questapis.dev/learn",
+      lastModified: new Date(),
+    },
+    {
       url: "https://questapis.dev",
       lastModified: new Date(),
     },
@@ -28,5 +32,10 @@ export default function sitemap() {
       url: "https://questapis.dev/about",
       lastModified: new Date(),
     },
+    { url: "https://questapis.dev/pricing", lastModified: new Date() },
+    { url: "https://questapis.dev/playground", lastModified: new Date() },
+    { url: "https://questapis.dev/status", lastModified: new Date() },
+    { url: "https://questapis.dev/help", lastModified: new Date() },
+    { url: "https://questapis.dev/changelog", lastModified: new Date() },
   ];
 }
