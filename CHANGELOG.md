@@ -2,6 +2,23 @@
 
 All notable QuestAPIs v2 changes are recorded here. Planned work is not listed as shipped.
 
+## [0.3.1] — 2026-09-29
+
+### Added
+
+- A standalone QuestAPIs Journal with a responsive editorial homepage, three launch articles, RSS feed, sitemap, robots policy, and security headers.
+- A deterministic static build for the closed-beta landing page so it can deploy through the existing Vercel project and from GitHub.
+
+### Changed
+
+- Replaced the live beta application page with the redesigned closed-beta notice at the existing beta URL.
+- Connected the beta Vercel project to the private `questapis/QuestAPIs` repository while keeping the v2 rebuild isolated on `v2-staging`.
+
+### Operations
+
+- Verified `questapis.dev` and `www.questapis.dev` already resolve successfully through the existing production Vercel project; no production DNS or domain assignment was changed.
+- Confirmed `questapis.blog` is owned in Porkbun and prepared a separate deployment path so the blog does not depend on the unfinished application backend.
+
 ## [0.3.0] — 2026-09-28
 
 ### Added
