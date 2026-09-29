@@ -639,6 +639,16 @@ button:disabled {
   color: var(--muted);
   margin-top: 8px;
 }
+.quest-availability {
+  margin-top: 24px;
+  border-top: 1px solid var(--border);
+  padding-top: 20px;
+}
+.quest-availability p {
+  color: var(--muted);
+  font-size: 13px;
+  margin-top: 6px;
+}
 .list-view .map-terrain {
   display: none;
 }

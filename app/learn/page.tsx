@@ -1,4 +1,4 @@
-import { LearningWorld, FirstQuest } from "@/components/learning-world";
+import { AcademyExperience } from "@/components/learning-world";
 export const metadata = {
   title: "Learn APIs from zero | QuestAPIs",
   description:
@@ -8,7 +8,7 @@ export default function LearnPage() {
   return (
     <main id="main-content" tabIndex={-1} className="shell learn-page">
       <section className="learn-intro">
-        <span className="status">Academy preview</span>
+        <span className="status">Academy open</span>
         <p className="eyebrow">Welcome, explorer</p>
         <h1>
           Your first step into
@@ -19,16 +19,15 @@ export default function LearnPage() {
           Learn APIs from zero. No coding experience required.
         </p>
         <p className="muted">
-          Discover the path ahead or jump straight into your first quest.
+          Explore eight beginner quests or jump straight into your first one.
           <br />
-          Starter Grove is open now, with saved progress for signed-in adventurers.
+          Signed-in adventurers can save each completion and earn one-time rewards.
         </p>
-        <a href="#first-quest" className="button">
+        <a href="#active-quest" className="button">
           Start your first quest →
         </a>
       </section>
-      <LearningWorld />
-      <FirstQuest />
+      <AcademyExperience />
     </main>
   );
 }

@@ -10,6 +10,18 @@ export type ChangelogEntry = {
 
 export const changelog: ChangelogEntry[] = [
   {
+    version: "0.4.0",
+    date: "2026-09-29",
+    title: "Eight-quest Academy and reliable account return",
+    summary: "The complete beginner route is now represented in the app and database, with clearer saved progress and a hardened email-verification return flow.",
+    groups: [
+      { kind: "Added", items: ["Seven new playable beginner quests covering HTTP, JSON, endpoints, API-key safety, webhooks, status codes, and project planning", "Published curriculum records, answer validation, and one-time XP/gold reward rules for all eight Academy regions", "Dashboard progress based on completed lessons rather than an XP estimate"] },
+      { kind: "Changed", items: ["Every map region now opens its own interactive lesson instead of showing a coming-later notice", "Successful password sign-in now performs a full navigation so the server immediately receives the new session cookie", "Verification callbacks now surface expired or malformed link errors and safely support both authorization codes and email token hashes", "Expanded Help and FAQ guidance for available quests, cross-browser verification, and the planned branded support sender"] },
+      { kind: "Security", items: ["Callback destinations are restricted to local paths to prevent external redirect abuse", "Lesson rewards remain server-validated, idempotent, and available only to authenticated users"] },
+      { kind: "Known limitation", items: ["A custom support@questapis.dev sender still requires a hosted mailbox plus verified SMTP configuration", "Opening a verification link on a different device cannot transfer that browser session; the verified user can sign in normally"] },
+    ],
+  },
+  {
     version: "0.3.1",
     date: "2026-09-29",
     title: "Public launch foundation",

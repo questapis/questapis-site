@@ -3,6 +3,7 @@ export const faqGroups = [
     title: "Starting the Academy",
     questions: [
       { question: "Do I need coding experience?", answer: "No. Starter Grove begins with programs, the internet, clients, servers, and data before asking you to read or write code." },
+      { question: "How many quests are available?", answer: "Eight beginner quests are available across the full Academy map: APIs, HTTP, JSON, endpoints, authentication, webhooks, errors, and project planning. You can open any region, and signed-in learners can save each completion once." },
       { question: "Is the Academy free?", answer: "The Explorer foundation is designed to include free beginner lessons and limited playground use. Final premium features and prices have not been announced." },
       { question: "Will I lose progress if I miss a day?", answer: "No. Streaks celebrate consistency without removing XP, gold, achievements, or completed lessons when you take a break." },
       { question: "Can I install QuestAPIs like an app?", answer: "Yes. On iPhone or iPad, open QuestAPIs in Safari, tap Share, then Add to Home Screen. On Android, open it in Chrome and choose Install app or Add to Home screen. Supported desktop browsers also offer an install button in the address bar or browser menu." },
@@ -23,6 +24,8 @@ export const faqGroups = [
     questions: [
       { question: "How is lesson progress saved?", answer: "After you sign in, the server validates a published lesson answer and asks the database to record the completion and one-time reward atomically. Refreshing or repeating the request cannot award the same lesson reward twice." },
       { question: "Can I reset my password?", answer: "Yes. Use Forgot password on the sign-in screen, then follow the secure link sent to your email to choose a new password." },
+      { question: "Why did an email link not keep me signed in?", answer: "Verification links establish a session in the browser that opens them. QuestAPIs now validates callback errors and preserves that session before continuing to onboarding. If you open the link on another device or browser, return to the original browser and sign in once with your verified account." },
+      { question: "Who sends account emails?", answer: "Account verification and password-recovery messages are delivered through the configured QuestAPIs authentication mail service. A branded support@questapis.dev sender is being prepared; until custom SMTP is connected and verified, messages may show the authentication provider's default sender." },
       { question: "Can I buy a premium plan now?", answer: "No. Final prices have not been set and QuestAPIs does not fake successful payments. Stripe will first be connected in test mode on staging." },
       { question: "Does buying a cosmetic affect API access?", answer: "No. Cosmetics use earned virtual gold. API and Academy premium access comes from separately verified plan entitlements or grants." },
       { question: "Can a cosmetic purchase use a price sent by my browser?", answer: "No. The database loads the published item price, locks your wallet during the transaction, checks ownership and balance, and commits the ledger, deduction, purchase, and inventory together." },

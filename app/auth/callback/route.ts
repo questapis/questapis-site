@@ -1,11 +1,39 @@
 import { NextResponse } from "next/server";
+import type { EmailOtpType } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase/server";
 
 export async function GET(request: Request) {
   const url = new URL(request.url);
   const code = url.searchParams.get("code");
+  const tokenHash = url.searchParams.get("token_hash");
+  const type = url.searchParams.get("type");
+  const suppliedError = url.searchParams.get("error_description") ?? url.searchParams.get("error");
+  const requestedNext = url.searchParams.get("next");
+  const next = requestedNext?.startsWith("/") && !requestedNext.startsWith("//") ? requestedNext : null;
   const supabase = await createClient();
-  if (code && supabase) await supabase.auth.exchangeCodeForSession(code);
-  return NextResponse.redirect(new URL("/onboarding", url.origin));
+
+  let authError = suppliedError;
+  if (!authError && !supabase) authError = "Authentication is temporarily unavailable.";
+  if (!authError && supabase && code) {
+    const { error } = await supabase.auth.exchangeCodeForSession(code);
+    authError = error?.message ?? null;
+  } else if (!authError && supabase && tokenHash && isEmailOtpType(type)) {
+    const { error } = await supabase.auth.verifyOtp({ token_hash: tokenHash, type });
+    authError = error?.message ?? null;
+  } else if (!authError && !code && !tokenHash) {
+    authError = "The email link is missing its verification token.";
+  }
+
+  if (authError) {
+    const destination = new URL("/login", url.origin);
+    destination.searchParams.set("message", `${authError} Please request a fresh link and try again.`);
+    return NextResponse.redirect(destination);
+  }
+
+  const destination = type === "recovery" ? "/account/reset" : next ?? "/onboarding";
+  return NextResponse.redirect(new URL(destination, url.origin));
 }
 
+function isEmailOtpType(value: string | null): value is EmailOtpType {
+  return value !== null && ["signup", "invite", "magiclink", "recovery", "email_change", "email"].includes(value);
+}

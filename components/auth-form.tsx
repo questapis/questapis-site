@@ -1,12 +1,10 @@
 "use client";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 
-export function AuthForm({ mode }: { mode: "login" | "signup" | "reset" }) {
-  const router = useRouter();
-  const [message, setMessage] = useState("");
+export function AuthForm({ mode, initialMessage = "" }: { mode: "login" | "signup" | "reset"; initialMessage?: string }) {
+  const [message, setMessage] = useState(initialMessage);
   const [busy, setBusy] = useState(false);
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -20,16 +18,14 @@ export function AuthForm({ mode }: { mode: "login" | "signup" | "reset" }) {
       if (mode === "login") {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
-        router.push("/dashboard");
-        router.refresh();
+        window.location.assign(new URL("/dashboard", window.location.origin).href);
       } else if (mode === "signup") {
         const { data, error } = await supabase.auth.signUp({ email, password, options: { emailRedirectTo: `${location.origin}/auth/callback` } });
         if (error) throw error;
         if (data.session) {
-          router.push("/onboarding");
-          router.refresh();
+          window.location.assign(new URL("/onboarding", window.location.origin).href);
         } else {
-          setMessage("Check your email to verify your account, then return to sign in.");
+          setMessage("Check your email and open the verification link. You will continue automatically in this browser; if you open it elsewhere, return here and sign in once.");
         }
       } else {
         const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo: `${location.origin}/account/reset` });
