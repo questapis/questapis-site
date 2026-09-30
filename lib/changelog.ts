@@ -10,6 +10,30 @@ export type ChangelogEntry = {
 
 export const changelog: ChangelogEntry[] = [
   {
+    version: "0.7.0",
+    date: "2026-09-29",
+    title: "Session-aware navigation and expanded Academy quests",
+    summary: "Account navigation now reflects the real Supabase session, and every Academy quest follows a paced five-page learning journey lasting about 67 minutes.",
+    groups: [
+      { kind: "Added", items: ["Five guided pages for every quest: orientation, deep dive, guided lab, practice, and review", "Page-level navigation, time estimates, key ideas, field exercises, reflection prompts, and a next-quest button", "A complete Academy estimate of roughly 27 hours across 24 quests"] },
+      { kind: "Changed", items: ["The header now displays Dashboard and Sign out for a verified active session instead of always displaying Log in", "The local explorer nickname no longer implies that a visitor is authenticated", "Help and FAQ now documents lesson length, navigation, and the branded account-email sender"] },
+      { kind: "Security", items: ["Header state is initialized from the server-validated Supabase user and kept current with the browser auth listener"] },
+      { kind: "Known limitation", items: ["Lesson time is an estimate; learners can move faster, pause, or repeat activities", "Saving XP and rewards still requires an authenticated network connection"] },
+    ],
+  },
+  {
+    version: "0.6.0",
+    date: "2026-09-29",
+    title: "Stripe sandbox purchasing foundation",
+    summary: "QuestAPIs can now exercise the complete premium purchase lifecycle safely in Stripe test mode before any real-money launch.",
+    groups: [
+      { kind: "Added", items: ["Stripe-hosted Checkout for authenticated Adventurer subscriptions", "Signed and replay-safe subscription webhooks", "A Customer Portal entry point for test invoices and subscription controls", "Transactional API-usage delivery with stable event identifiers and a protected retry endpoint", "A Supabase billing migration, environment template, and end-to-end sandbox guide"] },
+      { kind: "Changed", items: ["The pricing page now exposes a sandbox Checkout action only when server-side billing is configured", "Help and FAQ now explain the test purchase state and usage-based billing", "Authentication failures now show concise recovery guidance instead of provider implementation details"] },
+      { kind: "Security", items: ["The integration rejects live Stripe credentials, objects, sessions, subscriptions, and events", "Prices remain server-owned, and Checkout accepts only an allowlisted plan key", "Checkout and billing-portal creation require both authentication and the trusted QuestAPIs origin", "Login redirects accept only allowlisted reason codes and keep detailed authentication errors in server logs"] },
+      { kind: "Known limitation", items: ["The sandbox still needs an approved Adventurer test price, Stripe/Vercel secrets, webhook registration, Customer Portal configuration, and the billing database migration", "Live pricing and tax registrations have not been selected; no real-money purchasing is enabled"] },
+    ],
+  },
+  {
     version: "0.5.0",
     date: "2026-09-29",
     title: "The complete interactive Academy",

@@ -3,6 +3,7 @@ import "./globals.css";
 import { Analytics } from "@vercel/analytics/next";
 import { SiteHeader } from "@/components/site-header";
 import { PwaRegistration } from "@/components/pwa-registration";
+import { createClient } from "@/lib/supabase/server";
 export const metadata = {
   metadataBase: new URL("https://questapis.dev"),
   title: "QuestAPIs | Learn APIs. Build your adventure.",
@@ -18,18 +19,20 @@ export const metadata = {
   },
   openGraph: { title: "QuestAPIs | Learn APIs. Build your adventure.", description: "Learn APIs from zero through real requests, quests, and projects.", url: "https://questapis.dev", siteName: "QuestAPIs", type: "website" },
 };
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const supabase = await createClient();
+  const { data: { user } } = supabase ? await supabase.auth.getUser() : { data: { user: null } };
   return (
     <html lang="en">
       <body>
         <a className="skip-link" href="#main-content">
           Skip to content
         </a>
-        <SiteHeader />
+        <SiteHeader initiallyAuthenticated={Boolean(user)} />
         <PwaRegistration />
         {children}
         <footer className="site-footer">

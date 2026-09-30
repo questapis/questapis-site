@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import type { EmailOtpType } from "@supabase/supabase-js";
+import { authFailureReason } from "@/lib/auth-errors";
+import { logServerEvent } from "@/lib/server/logger";
 import { createClient } from "@/lib/supabase/server";
 
 export async function GET(request: Request) {
@@ -25,8 +27,10 @@ export async function GET(request: Request) {
   }
 
   if (authError) {
+    const reason = authFailureReason(authError);
+    logServerEvent("warn", "auth.callback_failed", { reason, message: authError });
     const destination = new URL("/login", url.origin);
-    destination.searchParams.set("message", `${authError} Please request a fresh link and try again.`);
+    destination.searchParams.set("reason", reason);
     return NextResponse.redirect(destination);
   }
 

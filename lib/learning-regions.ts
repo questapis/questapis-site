@@ -21,6 +21,115 @@ export type LearningQuest = {
   y: number;
 };
 
+export type LessonPage = {
+  label: string;
+  title: string;
+  minutes: number;
+  paragraphs: string[];
+  takeaways: string[];
+  activity: string;
+  prompt: string;
+};
+
+/**
+ * Turns every curriculum record into the same deliberate five-part learning
+ * rhythm. The language stays tied to the selected quest instead of padding a
+ * short article with generic filler, and the activities account for most of
+ * the estimated study time.
+ */
+export function lessonPagesFor(quest: LearningQuest): LessonPage[] {
+  const responseFields = Object.keys(quest.response);
+  return [
+    {
+      label: "ORIENT",
+      title: quest.conceptTitle,
+      minutes: 12,
+      paragraphs: [
+        ...quest.paragraphs,
+        `During this quest, you will connect ${quest.topic.toLowerCase()} to a realistic request and explain the result in your own words. The goal is understanding—not memorizing a definition.`,
+      ],
+      takeaways: [
+        `Describe ${quest.title.toLowerCase()} without jargon.`,
+        "Separate what the client asks for from what the service returns.",
+        "Recognize the idea when it appears in API documentation.",
+      ],
+      activity: "Write a two-sentence explanation for a friend who has never used an API. Include one everyday app that could use this idea.",
+      prompt: "What problem does this concept solve for a person using an app?",
+    },
+    {
+      label: "DEEP DIVE",
+      title: `Build a mental model of ${quest.topic.toLowerCase()}`,
+      minutes: 15,
+      paragraphs: [
+        "An API interaction is a contract: the client follows a documented format, the server evaluates the request, and the response reports an outcome. Each visible detail exists so both sides can agree on meaning.",
+        `In this example, the destination is ${quest.request}. Read it from left to right and identify the resource, any identifier, and any option that changes the result.`,
+        "Production systems add authentication, validation, logging, timeouts, and recovery around this same core exchange. Learning the small example first makes those layers easier to reason about later.",
+      ],
+      takeaways: [
+        "Client: the software initiating the request.",
+        "Endpoint: the documented address and operation the server exposes.",
+        "Response: status, headers, and data returned after processing.",
+        `Fields to inspect here: ${responseFields.join(", ")}.`,
+      ],
+      activity: `Copy ${quest.request} into your notes. Circle the part that identifies the resource, then describe what you expect back before revealing the example response.`,
+      prompt: "Which part of this exchange would be hardest to diagnose if it were missing?",
+    },
+    {
+      label: "GUIDED LAB",
+      title: "Trace the request from click to response",
+      minutes: 15,
+      paragraphs: [
+        "Imagine the learner presses a button. The browser creates a request, the network carries it to the service, the service checks its rules, and a response travels back. The interface then turns structured data into something a person can understand.",
+        `The lab below returns an example with ${responseFields.length} top-level field${responseFields.length === 1 ? "" : "s"}. Inspect both the values and their data types; a correct label with the wrong type can still break an application.`,
+        `Pay attention to this interpretation: ${quest.responseNote}`,
+      ],
+      takeaways: [
+        "Predict the response before sending the request.",
+        "Compare the actual shape with the shape you expected.",
+        "Use status and response details as evidence, not guesses.",
+      ],
+      activity: "Send the simulated request, list each returned field and value, then change one value on paper and explain how the interface should react.",
+      prompt: "What evidence tells you that the request worked as intended?",
+    },
+    {
+      label: "PRACTICE",
+      title: "Apply the idea in a new scenario",
+      minutes: 15,
+      paragraphs: [
+        "Transfer is what turns reading into skill. Rebuild the same pattern for a different product: a music app, a store, a fitness tracker, or an idea of your own.",
+        "Define the user outcome first. Then write a plausible endpoint, name the request information, sketch a success response, and describe one failure response. Do not include real credentials or personal data.",
+        "Finally, review the design from the user's perspective. A sound integration explains loading, empty, success, and error states instead of assuming the network always works.",
+      ],
+      takeaways: [
+        "Outcome before endpoint.",
+        "Safe example data before real data.",
+        "Success and failure paths receive equal attention.",
+        "Secrets never belong in notes, URLs, or screenshots.",
+      ],
+      activity: `Create a mini contract inspired by “${quest.title}”: method, endpoint, inputs, success response, one likely error, and the message a user should see.`,
+      prompt: "What would make your mini contract clear enough for another developer to implement?",
+    },
+    {
+      label: "REVIEW",
+      title: "Explain, check, and continue",
+      minutes: 10,
+      paragraphs: [
+        "Close your notes and explain the concept aloud in thirty seconds. If you get stuck, return to the page that introduced the missing idea instead of guessing.",
+        "Then answer the knowledge check. A correct answer completes the quest; the explanation matters more than speed, and you can retry without penalty.",
+        `Remember the central lesson: ${quest.explanation}`,
+      ],
+      takeaways: [
+        "I can explain the concept in plain language.",
+        "I can recognize it in a request and response.",
+        "I can apply it to a new product scenario.",
+        "I know what evidence to inspect when it fails.",
+      ],
+      activity: "Answer the check below, then save one sentence describing what became clearer during this quest.",
+      prompt: "What is the one idea from this quest that you expect to use again?",
+    },
+  ];
+}
+
 export const regions: LearningQuest[] = [
   {
     slug: "what-is-an-api", courseSlug: "api-basics", name: "Starter Grove", topic: "The internet and APIs",

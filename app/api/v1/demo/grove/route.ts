@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { hashApiKey, hashesMatch } from "@/lib/server/api-keys";
+import { recordStripeUsage } from "@/lib/server/billing";
 import { logServerEvent } from "@/lib/server/logger";
 import { createAdminClient } from "@/lib/supabase/admin";
 
@@ -29,6 +30,19 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: { code: "UNAUTHORIZED", message: "The API key is invalid, revoked, or over quota." } }, { status: 401 });
     }
     logServerEvent("info", "api.request_metered", { route: "grove", keyId: data?.keyId, used: data?.used });
+    if (data?.userId && data?.requestId) {
+      try {
+        const usage = await recordStripeUsage({ userId: data.userId, requestId: data.requestId, units: 1 });
+        if (usage.delivered) {
+          await admin.from("stripe_usage_events").update({ delivered_at: new Date().toISOString() }).eq("request_id", data.requestId);
+        }
+      } catch (error) {
+        logServerEvent("warn", "stripe.usage_delivery_deferred", {
+          requestId: data.requestId,
+          message: error instanceof Error ? error.message : "Unknown usage delivery failure",
+        });
+      }
+    }
   } else if (!validKey(rawKey)) {
     return NextResponse.json({ error: { code: "UNAUTHORIZED", message: "Provide a valid API key in the x-api-key header." } }, { status: 401 });
   }

@@ -1,7 +1,7 @@
 "use client";
 
 import { type FormEvent, useState, useSyncExternalStore } from "react";
-import { allAcademyQuests, courseQuests, regions, type LearningQuest } from "@/lib/learning-regions";
+import { allAcademyQuests, courseQuests, lessonPagesFor, regions, type LearningQuest } from "@/lib/learning-regions";
 
 const explorerNameKey = "questapis-explorer-name";
 function subscribeToExplorerName(callback: () => void) {
@@ -12,7 +12,7 @@ function subscribeToExplorerName(callback: () => void) {
 function readExplorerName() { return window.localStorage.getItem(explorerNameKey) ?? ""; }
 function readServerExplorerName() { return ""; }
 
-export function AcademyExperience() {
+export function AcademyExperience({ authenticated = false }: { authenticated?: boolean }) {
   const [selectedCourse, setSelectedCourse] = useState(0);
   const [selectedQuest, setSelectedQuest] = useState(0);
   const [view, setView] = useState<"map" | "list">("map");
@@ -26,6 +26,11 @@ export function AcademyExperience() {
     setSelectedCourse(courseIndex);
     setSelectedQuest(questIndex);
     window.setTimeout(() => document.getElementById("active-quest")?.scrollIntoView({ behavior: "smooth" }), 0);
+  }
+
+  function chooseNextQuest() {
+    if (selectedQuest < quests.length - 1) chooseQuest(selectedCourse, selectedQuest + 1);
+    else if (selectedCourse < courseQuests.length - 1) chooseQuest(selectedCourse + 1, 0);
   }
 
   function saveExplorerName(event: FormEvent<HTMLFormElement>) {
@@ -42,8 +47,8 @@ export function AcademyExperience() {
         <div className="welcome-orb" aria-hidden="true"><span>✦</span></div>
         <div>
           <p className="eyebrow">Your adventure remembers you</p>
-          <h2>{explorerName ? `Welcome back, ${explorerName}.` : "What should the Academy call you?"}</h2>
-          <p className="muted">Twenty-four quests are ready. Choose any course, learn at your pace, and return whenever you like.</p>
+          <h2>{explorerName ? `${authenticated ? "Welcome back" : "Welcome"}, ${explorerName}.` : "What should the Academy call you?"}</h2>
+          <p className="muted">Twenty-four in-depth quests are ready. {authenticated ? "Your completed quests can be saved to this account." : "Sign in to save completion and rewards across devices."}</p>
         </div>
         {explorerName ? <button className="text-link welcome-change" onClick={() => { setNameDraft(explorerName); window.localStorage.removeItem(explorerNameKey); window.dispatchEvent(new Event("questapis-name")); }}>Change name</button> :
           <form className="explorer-name-form" onSubmit={saveExplorerName}>
@@ -87,22 +92,31 @@ export function AcademyExperience() {
             <p className="region-topic">{region.topic}</p>
             <p className="muted">{region.description}</p>
             <div className="course-quest-list">
-              {quests.map((item, index) => <button key={item.slug} className={selectedQuest === index ? "selected" : ""} onClick={() => setSelectedQuest(index)}><span>{String(index + 1).padStart(2, "0")}</span><span><strong>{item.title}</strong><small>{item.duration} · 100 XP</small></span></button>)}
+              {quests.map((item, index) => <button key={item.slug} className={selectedQuest === index ? "selected" : ""} onClick={() => setSelectedQuest(index)}><span>{String(index + 1).padStart(2, "0")}</span><span><strong>{item.title}</strong><small>About 67 minutes · 100 XP</small></span></button>)}
             </div>
             <button className="button" onClick={() => chooseQuest(selectedCourse, selectedQuest)}>Begin selected quest →</button>
           </aside>
         </div>
       </section>
-      <QuestLesson key={quest.slug} quest={quest} questNumber={selectedCourse * 3 + selectedQuest + 1} totalQuests={allAcademyQuests.length} />
+      <QuestLesson key={quest.slug} quest={quest} questNumber={selectedCourse * 3 + selectedQuest + 1} totalQuests={allAcademyQuests.length} onNext={chooseNextQuest} isFinal={selectedCourse === courseQuests.length - 1 && selectedQuest === quests.length - 1} />
     </>
   );
 }
 
-function QuestLesson({ quest, questNumber, totalQuests }: { quest: LearningQuest; questNumber: number; totalQuests: number }) {
+function QuestLesson({ quest, questNumber, totalQuests, onNext, isFinal }: { quest: LearningQuest; questNumber: number; totalQuests: number; onNext: () => void; isFinal: boolean }) {
   const [requested, setRequested] = useState(false);
   const [answer, setAnswer] = useState<number | null>(null);
   const [completion, setCompletion] = useState("");
   const [saving, setSaving] = useState(false);
+  const [page, setPage] = useState(0);
+  const pages = lessonPagesFor(quest);
+  const currentPage = pages[page];
+  const correct = answer === quest.correctAnswer;
+
+  function changePage(nextPage: number) {
+    setPage(Math.max(0, Math.min(nextPage, pages.length - 1)));
+    window.setTimeout(() => document.getElementById("quest-title")?.scrollIntoView({ behavior: "smooth", block: "start" }), 0);
+  }
 
   async function chooseAnswer(index: number) {
     setAnswer(index);
@@ -131,40 +145,41 @@ function QuestLesson({ quest, questNumber, totalQuests }: { quest: LearningQuest
   }
 
   return (
-    <section className={`lesson section ${answer === quest.correctAnswer ? "celebrating" : ""}`} id="active-quest" aria-labelledby="quest-title">
+    <section className={`lesson section ${correct ? "celebrating" : ""}`} id="active-quest" aria-labelledby="quest-title">
       <div className="lesson-heading">
         <p className="eyebrow">{quest.name} / Quest {String(questNumber).padStart(2, "0")} of {totalQuests}</p>
         <h2 id="quest-title">{quest.title}</h2>
-        <p className="muted">{quest.duration}. No setup or coding required.</p>
+        <p className="muted">About 67 minutes · five guided pages · no setup or coding required.</p>
       </div>
-      <div className="lesson-grid">
-        <article className="quest-card lesson-copy">
-          <span className="card-index">01 / UNDERSTAND</span>
-          <h3>{quest.conceptTitle}</h3>
-          {quest.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
-        </article>
-        <div className="quest-card playground">
-          <span className="card-index">02 / TRY IT</span>
-          <h3>Send an example request.</h3>
-          <p className="muted">This simulation uses safe example data and does not contact a third-party API.</p>
+      <nav className="lesson-progress" aria-label="Quest pages">
+        {pages.map((item, index) => <button key={item.label} aria-current={page === index ? "step" : undefined} onClick={() => changePage(index)}><span>{index + 1}</span><small>{item.label}</small></button>)}
+      </nav>
+      <article className="quest-card lesson-page">
+        <div className="lesson-page-heading"><span className="card-index">PAGE {page + 1} OF {pages.length} / {currentPage.label}</span><span className="lesson-time">◷ {currentPage.minutes} min</span></div>
+        <h3>{currentPage.title}</h3>
+        {currentPage.paragraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+        <div className="lesson-details">
+          <div><h4>Key ideas</h4><ul>{currentPage.takeaways.map((item) => <li key={item}>{item}</li>)}</ul></div>
+          <div className="lesson-activity"><h4>Your field exercise</h4><p>{currentPage.activity}</p><strong>Reflect:</strong><p>{currentPage.prompt}</p></div>
+        </div>
+        {page === 2 && <div className="playground lesson-lab">
+          <h4>Interactive request lab</h4>
+          <p className="muted">This uses safe example data and does not contact a third-party API.</p>
           <div className="request-line"><span>GET</span><code>{quest.request}</code></div>
           <button className="button" onClick={() => setRequested(true)}>{requested ? "Send request again ↗" : "Send example request ↗"}</button>
-          <div className="response-box" aria-live="polite">
-            {requested ? <><span className="success-label">200 OK · Example response</span><pre>{JSON.stringify(quest.response, null, 2)}</pre><p className="small muted">{quest.responseNote}</p></> : <p className="muted">Your example response will appear here.</p>}
-          </div>
-        </div>
+          <div className="response-box" aria-live="polite">{requested ? <><span className="success-label">200 OK · Example response</span><pre>{JSON.stringify(quest.response, null, 2)}</pre><p className="small muted">{quest.responseNote}</p></> : <p className="muted">Predict the response, then send the request to compare.</p>}</div>
+        </div>}
+        {page === pages.length - 1 && <fieldset className="knowledge-check">
+          <legend>Check your understanding</legend><p>{quest.question}</p>
+          <div className="answer-options">{quest.answers.map((label, index) => <button key={label} aria-pressed={answer === index} onClick={() => void chooseAnswer(index)} disabled={saving} className="answer-button">{label}</button>)}</div>
+          <div className="answer-feedback" aria-live="polite">{correct ? <p className="success-label">✓ Exactly. {quest.explanation}</p> : answer !== null ? <p>Not quite. Review the example and try again.</p> : <p className="muted">Choose an answer to see an explanation.</p>}</div>
+          <p className="small muted" aria-live="polite">{saving ? "Validating and saving…" : completion || "Sign in to save completion and earn the one-time reward."}</p>
+        </fieldset>}
+      </article>
+      <div className="lesson-navigation">
+        <button className="text-link" onClick={() => changePage(page - 1)} disabled={page === 0}>← Previous page</button>
+        {page < pages.length - 1 ? <button className="button" onClick={() => changePage(page + 1)}>Next page →</button> : correct && !isFinal ? <button className="button" onClick={onNext}>Next quest →</button> : correct && isFinal ? <a className="button" href="/dashboard">View your Academy progress →</a> : <span className="muted small">Complete the check to unlock the next quest.</span>}
       </div>
-      <fieldset className="knowledge-check">
-        <legend>Check your understanding</legend>
-        <p>{quest.question}</p>
-        <div className="answer-options">
-          {quest.answers.map((label, index) => <button key={label} aria-pressed={answer === index} onClick={() => void chooseAnswer(index)} disabled={saving} className="answer-button">{label}</button>)}
-        </div>
-        <div className="answer-feedback" aria-live="polite">
-          {answer === quest.correctAnswer ? <p className="success-label">✓ Exactly. {quest.explanation}</p> : answer !== null ? <p>Not quite. Review the example and try again.</p> : <p className="muted">Choose an answer to see an explanation.</p>}
-        </div>
-        <p className="small muted" aria-live="polite">{saving ? "Validating and saving…" : completion || "Sign in to save completion and earn the one-time reward."}</p>
-      </fieldset>
     </section>
   );
 }

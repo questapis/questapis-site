@@ -2,6 +2,52 @@
 
 All notable QuestAPIs v2 changes are recorded here. Planned work is not listed as shipped.
 
+## [0.7.0] — 2026-09-29
+
+### Added
+
+- Five substantial pages for every Academy quest: orientation, deep dive, guided lab, independent practice, and review.
+- Page progress, estimated study time, key ideas, field exercises, reflection prompts, and next-page navigation.
+- A Next quest action after a correct final knowledge check.
+
+### Changed
+
+- The global header now uses the real Supabase session and shows Dashboard and Sign out for authenticated learners.
+- A device-only explorer nickname no longer falsely labels a signed-out visitor as “Welcome back.”
+- Each of the 24 quests now supports about 67 minutes of study, for roughly 27 hours across the full Academy.
+- Help and FAQ now explains lesson length, account-session behavior, and the branded support email sender.
+
+### Security
+
+- Authentication display is initialized from a server-validated user and kept current with Supabase auth state changes.
+
+### Known limitations
+
+- Study times are estimates; learners may finish faster or spend longer on exercises.
+- XP and reward saving still requires an authenticated network connection.
+
+## [0.6.0] — 2026-09-29
+
+### Added
+
+- A secure Stripe-hosted sandbox Checkout flow for authenticated Adventurer subscriptions.
+- Signed, replay-safe Stripe webhook processing with canonical subscription refreshes for out-of-order events.
+- A sandbox Customer Portal entry point for invoices and subscription management.
+- Transactional API-usage outbox delivery with stable event identifiers and a protected retry endpoint.
+- A Supabase billing migration, test environment template, and end-to-end sandbox setup guide.
+
+### Security
+
+- Billing rejects live Stripe keys, objects, events, and sessions until a separate live-launch review is explicitly approved.
+- Price IDs and amounts remain server-owned; browser requests can select only allowlisted plan keys.
+- Checkout and portal creation require authentication and a trusted website origin.
+- Authentication callbacks now map provider failures to allowlisted reason codes, preventing raw PKCE or provider diagnostics from appearing in the interface.
+
+### Known limitations
+
+- The sandbox still needs an approved Adventurer test price, Stripe/Vercel secrets, webhook registration, Customer Portal configuration, and the database migration before visitors can complete a test Checkout.
+- Live pricing and tax registrations have not been selected; no real-money purchasing is enabled.
+
 ## [0.3.1] — 2026-09-29
 
 ### Added

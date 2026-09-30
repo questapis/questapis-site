@@ -1,10 +1,13 @@
 import { AcademyExperience } from "@/components/learning-world";
+import { createClient } from "@/lib/supabase/server";
 export const metadata = {
   title: "Learn APIs from zero | QuestAPIs",
   description:
     "Explore the QuestAPIs learning world and try a free introductory API lesson. No coding experience required.",
 };
-export default function LearnPage() {
+export default async function LearnPage() {
+  const supabase = await createClient();
+  const { data: { user } } = supabase ? await supabase.auth.getUser() : { data: { user: null } };
   return (
     <main id="main-content" tabIndex={-1} className="shell learn-page">
       <section className="learn-intro">
@@ -27,7 +30,7 @@ export default function LearnPage() {
           Start your first quest →
         </a>
       </section>
-      <AcademyExperience />
+      <AcademyExperience authenticated={Boolean(user)} />
     </main>
   );
 }

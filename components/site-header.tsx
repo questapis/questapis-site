@@ -2,7 +2,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { createClient } from "@/lib/supabase/client";
+import { LogoutButton } from "@/components/logout-button";
 const links = [
   ["Home", "/"],
   ["Learn", "/learn"],
@@ -12,10 +14,22 @@ const links = [
   ["Projects", "/projects"],
   ["About", "/about"],
 ];
-export function SiteHeader() {
+export function SiteHeader({ initiallyAuthenticated = false }: { initiallyAuthenticated?: boolean }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const [authenticated, setAuthenticated] = useState(initiallyAuthenticated);
   const menuButton = useRef<HTMLButtonElement>(null);
+  useEffect(() => {
+    let client;
+    try {
+      client = createClient();
+    } catch {
+      return;
+    }
+    void client.auth.getUser().then(({ data }) => setAuthenticated(Boolean(data.user)));
+    const { data } = client.auth.onAuthStateChange((_event, session) => setAuthenticated(Boolean(session?.user)));
+    return () => data.subscription.unsubscribe();
+  }, []);
   return (
     <header
       className="site-header"
@@ -71,9 +85,10 @@ export function SiteHeader() {
             </Link>
           ))}
         </nav>
-        <Link className="button header-cta" href="/login">
-          Log in ↗
-        </Link>
+        <div className="header-account">
+          {authenticated ? <><Link className="button header-cta" href="/dashboard">Dashboard →</Link><LogoutButton /></> :
+            <Link className="button header-cta" href="/login">Log in ↗</Link>}
+        </div>
       </div>
     </header>
   );

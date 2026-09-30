@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { changelog } from "./changelog";
 import { faqGroups } from "./help-content";
-import { allAcademyQuests, courseQuests, regions } from "./learning-regions";
+import { allAcademyQuests, courseQuests, lessonPagesFor, regions } from "./learning-regions";
 
 describe("public support content", () => {
   it("keeps changelog entries newest first", () => {
@@ -25,5 +25,14 @@ describe("public support content", () => {
     expect(allAcademyQuests).toHaveLength(24);
     expect(new Set(allAcademyQuests.map((quest) => quest.slug)).size).toBe(24);
     expect(allAcademyQuests.every((quest) => quest.answers[quest.correctAnswer] && quest.answerKey)).toBe(true);
+  });
+
+  it("gives every quest a multi-page hour-long learning path", () => {
+    for (const quest of allAcademyQuests) {
+      const pages = lessonPagesFor(quest);
+      expect(pages).toHaveLength(5);
+      expect(pages.reduce((total, page) => total + page.minutes, 0)).toBeGreaterThan(60);
+      expect(pages.every((page) => page.paragraphs.length >= 3 && page.takeaways.length >= 3 && page.activity && page.prompt)).toBe(true);
+    }
   });
 });

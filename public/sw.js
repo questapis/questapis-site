@@ -1,4 +1,4 @@
-const SHELL_CACHE = "questapis-shell-2026-09-29";
+const SHELL_CACHE = "questapis-shell-2026-09-29-v2";
 const SHELL = [
   "/",
   "/learn",

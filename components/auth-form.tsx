@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { FormEvent, useState } from "react";
+import { friendlyAuthError } from "@/lib/auth-errors";
 import { createClient } from "@/lib/supabase/client";
 
 export function AuthForm({ mode, initialMessage = "" }: { mode: "login" | "signup" | "reset"; initialMessage?: string }) {
@@ -33,7 +34,7 @@ export function AuthForm({ mode, initialMessage = "" }: { mode: "login" | "signu
         setMessage("If an account exists, a reset link is on its way.");
       }
     } catch (error) {
-      setMessage(error instanceof Error ? error.message : "Unable to continue. Try again.");
+      setMessage(friendlyAuthError(error, mode));
     } finally {
       setBusy(false);
     }
